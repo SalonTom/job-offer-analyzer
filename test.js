@@ -1,6 +1,6 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-API_KEY = 'YOUR API KEY'
+API_KEY = 'AIzaSyBH3DPO8epn_atKSm0NJyfr_Gu_Lz0GrPk'
 
 let prompt_intro = `Voici des définitions de catégories de profil :
 
@@ -169,6 +169,7 @@ async function run() {
   text = text.replace('\`\`\`', '')
 
   console.log(JSON.parse(text));
+  return JSON.parse(text)
 }
 
 run();

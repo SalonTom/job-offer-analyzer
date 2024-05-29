@@ -1,26 +1,7 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user';
 
-
 const userStore = useUserStore()
-
-const personality_factors  = {
-  "Persuasiveness": 3,
-  "Flexibility": 9,
-  "Extraversion": 3,
-  "Emotional distance": 7,
-  "Improvisation": 7,
-  "Rationalism": 9,
-  "Respect for rules": 3,
-  "Work involvement": 7,
-  "Desire for power": 1,
-  "Need for action": 3,
-  "Ambition": 7,
-  "Need for autonomy": 7,
-  "Altruism": 1,
-  "Novelty seeking": 7
-}
-
 </script>
 
 <template>
@@ -49,7 +30,7 @@ const personality_factors  = {
         <div>
             <h2>Factors</h2>
             <div class="factors-container">
-                <div v-for="[factor, userScore] of Object.entries(personality_factors)" class="grey-round" style="max-width: 340px;">
+                <div v-for="[factor, userScore] of Object.entries(userStore.scores)" class="grey-round factor">
                     <div class="factor-name">
                         <div>
                             {{ factor }}
@@ -144,4 +125,17 @@ const personality_factors  = {
     align-items: center;
     gap: 12px;
 }
+
+@media (max-width: 1130px) {
+    .factor {
+        max-width: 100%
+    }
+}
+
+@media (min-width: 1130px) {
+    .factor {
+        width: 340px;
+    }
+}
+
 </style>
