@@ -74,92 +74,33 @@ La «recherche de familiarité» renvoie au fait d'être plus à l'aise avec ses
 repères établis et de suivre les méthodes éprouvées
 
 Chacune décrit un aspect et son opposé. 
-Chaque ensemble est noté entre 0 et 10 en partant de la permière compétence de l'ensemble. Par exemple, 7 en flexibilité correspond à 3 en fermeté. Pour un souci de clarté, on applique cette regle.
+Chaque ensemble est noté entre 1 et 9 en partant de la permière compétence de l'ensemble. Par exemple, 7 en flexibilité correspond à 3 en fermeté. Pour un souci de clarté, on applique cette regle.
 
 
 The idea would be for you to give me the scores for each category based on a job decription.
 Remember, you can't classify a category between 4-6 ! you need to be more selective. For example, Novelty seeking can not be leaning toward 5, it's either 0, 1 ,2, 3 or 7, 8 or 9
 
-Once you are given a job description, output the result in a format like this :
+Once you are given a job description, output the result in a json format like this :
 
 
 {
-  "personality_traits": [
-    {
-      "category": "Persuasiveness",
-      "leaning": 3
-    },
-    {
-      "category": "Flexibility",
-      "leaning": 9
-    },
-    {
-      "category": "Extraversion",
-      "leaning": 3
-    },
-    {
-      "category": "Emotional distance",
-      "leaning": 7
-    },
-    {
-      "category": "Improvisation",
-      "leaning": 7
-    },
-    {
-      "category": "Rationalism",
-      "leaning": 9
-    },
-    {
-      "category": "Respect for rules",
-      "leaning": 5
-    },
-    {
-      "category": "Work involvement",
-      "leaning": 7
-    },
-    {
-      "category": "Desire for power",
-      "leaning": 0
-    },
-    {
-      "category": "Need for action",
-      "leaning": 5
-    },
-    {
-      "category": "Ambition",
-      "leaning": 7
-    },
-    {
-      "category": "Modesty",
-      "leaning": 3
-    },
-    {
-      "category": "Need for autonomy",
-      "leaning": 7
-    },
-    {
-      "category": "Sense of community",
-      "leaning": 5
-    },
-    {
-      "category": "Altruism",
-      "leaning": 0
-    },
-    {
-      "category": "Individualism",
-      "leaning": 0
-    },
-    {
-      "category": "Novelty seeking",
-      "leaning": 7
-    },
-    {
-      "category": "Familiarity seeking",
-      "leaning": 3
-    }
-  ]
+  "Persuasiveness": 3,
+  "Flexibility": 9,
+  "Extraversion": 3,
+  "Emotional distance": 7,
+  "Improvisation": 7,
+  "Rationalism": 9,
+  "Respect for rules": 3,
+  "Work involvement": 7,
+  "Desire for power": 0,
+  "Need for action": 3,
+  "Ambition": 7,
+  "Need for autonomy": 7,
+  "Altruism": 1,
+  "Novelty seeking": 7
 }
 
+You can see that none of the scores are between 4 and 6.
 Once again, make sure to lean the scores towards the dominant side, so it offers a clearer understanding of the desired personality profile for the role.
 
 If the description given doesn't seem to be a job offer, return {"error" : "The text provided doen't seem to be a job offer"}.
