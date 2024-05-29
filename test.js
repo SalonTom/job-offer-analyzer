@@ -92,7 +92,7 @@ Once you are given a job description, output the result in a json format like th
   "Rationalism": 9,
   "Respect for rules": 3,
   "Work involvement": 7,
-  "Desire for power": 0,
+  "Desire for power": 1,
   "Need for action": 3,
   "Ambition": 7,
   "Need for autonomy": 7,

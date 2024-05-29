@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useUserStore } from '@/stores/user';
+
+
+const userStore = useUserStore()
 
 const personality_factors  = {
   "Persuasiveness": 3,
@@ -9,7 +13,7 @@ const personality_factors  = {
   "Rationalism": 9,
   "Respect for rules": 3,
   "Work involvement": 7,
-  "Desire for power": 0,
+  "Desire for power": 1,
   "Need for action": 3,
   "Ambition": 7,
   "Need for autonomy": 7,
@@ -29,16 +33,16 @@ const personality_factors  = {
                 <div class="row">
                     <div class="form-group">
                         <label for="name">Nom</label>
-                        <input id="name" value="SALON" disabled>
+                        <input id="name" :value="userStore.name" disabled>
                     </div>
                     <div class="form-group">
                         <label for="firstname">Prénom</label>
-                        <input id="firstname" value="Tom" disabled>
+                        <input id="firstname" :value="userStore.firstname" disabled>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="email">Prénom</label>
-                    <input id="email" value="tom.salon@gmail.com" disabled>
+                    <input id="email" :value="userStore.email" disabled>
                 </div>
             </div>
         </div>
