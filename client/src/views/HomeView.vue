@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { GeminiService } from '@/services/geminiService';
-import { reactive, ref, type Ref } from 'vue';
+import { useUserStore } from '@/stores/user';
+import { computed, reactive, ref, type Ref } from 'vue';
 
 const isBusy : Ref<boolean> = ref(false)
 const showResultModale:  Ref<boolean> = ref(false)
@@ -11,7 +12,7 @@ let jobOffer = reactive({
     description : ''
 })
 
-let result = reactive({comment : '', note: 0, jobTitle : '', company : ''})
+let result : Record<any, any> = reactive({comment : '', note: 0, jobTitle : '', company : ''})
 
 async function checkJobAsync() : Promise<void> {
     isBusy.value = true
@@ -32,6 +33,16 @@ async function checkJobAsync() : Promise<void> {
 
     isBusy.value = false
 }
+
+const jobFitScore = computed(() => {
+    let score = 0;
+
+    Object.keys(useUserStore().scores).forEach((key : string) => {
+        score += useUserStore().scores[key] == result[key] ? 1 : 0;
+    });
+
+    return parseFloat((score*10/14).toFixed(2));
+})
 
 
 </script>
@@ -71,7 +82,7 @@ async function checkJobAsync() : Promise<void> {
                     </div>
                 </div>
                 <div style="flex-grow: 2; text-align: center;">
-                    {{ result["note"] }} / 10
+                    {{ jobFitScore }} / 10
                 </div>
             </div>
             <div>

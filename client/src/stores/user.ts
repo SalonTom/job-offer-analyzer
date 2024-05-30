@@ -14,21 +14,37 @@ export const useUserStore = defineStore('user', () => {
         name.value = 'SALON'
         firstname.value = 'Tom'
         email.value = 'tom.salon@gmail.com'
+        // scores.value = {
+        //     "Persuasiveness": 8,
+        //     "Flexibility": 9,
+        //     "Extraversion": 3,
+        //     "Emotional distance": 8,
+        //     "Improvisation": 3,
+        //     "Rationalism": 8,
+        //     "Respect for rules": 9,
+        //     "Work involvement": 8,
+        //     "Desire for power": 1,
+        //     "Need for action": 2,
+        //     "Ambition": 3,
+        //     "Need for autonomy": 3,
+        //     "Altruism": 9,
+        //     "Novelty seeking": 7
+        // }
         scores.value = {
-            "Persuasiveness": 3,
-            "Flexibility": 9,
-            "Extraversion": 3,
-            "Emotional distance": 7,
-            "Improvisation": 7,
-            "Rationalism": 9,
-            "Respect for rules": 3,
-            "Work involvement": 7,
+            "Persuasiveness": 1,
+            "Flexibility": 1,
+            "Extraversion": 1,
+            "Emotional distance": 1,
+            "Improvisation": 1,
+            "Rationalism": 1,
+            "Respect for rules": 1,
+            "Work involvement": 1,
             "Desire for power": 1,
-            "Need for action": 3,
-            "Ambition": 7,
-            "Need for autonomy": 7,
+            "Need for action": 1,
+            "Ambition": 1,
+            "Need for autonomy": 1,
             "Altruism": 1,
-            "Novelty seeking": 7
+            "Novelty seeking": 1
         }
     }
 

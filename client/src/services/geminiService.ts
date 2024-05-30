@@ -4,8 +4,6 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 export class GeminiService {
     public static async callGeminiAsync(jobOfferDescription : string) {
 
-        const apiKey = 'AIzaSyBH3DPO8epn_atKSm0NJyfr_Gu_Lz0GrPk'
-
         let prompt_intro = `Voici des définitions de catégories de profil :
 
         La « volonté de persuasion» est définie comme l'aisance avec laquelle un individu arrive à
@@ -84,24 +82,24 @@ export class GeminiService {
         The idea would be for you to give me the scores for each category based on a job decription.
         Remember, you can't classify a category between 4-6 ! you need to be more selective. For example, Novelty seeking can not be leaning toward 5, it's either 0, 1 ,2, 3 or 7, 8 or 9
 
-        Once you are given a job description, output the result in a json format like this :
+        Once you are given a job description, analyze the job offer and attribute a score to each factor :
 
 
         {
-        "Persuasiveness": 3,
-        "Flexibility": 9,
-        "Extraversion": 3,
-        "Emotional distance": 7,
-        "Improvisation": 7,
-        "Rationalism": 9,
-        "Respect for rules": 3,
-        "Work involvement": 7,
-        "Desire for power": 1,
-        "Need for action": 3,
-        "Ambition": 7,
-        "Need for autonomy": 7,
-        "Altruism": 1,
-        "Novelty seeking": 7,
+        "Persuasiveness": ...,
+        "Flexibility": ...,
+        "Extraversion": ...,
+        "Emotional distance": ...,
+        "Improvisation": ...,
+        "Rationalism": ...,
+        "Respect for rules": ...,
+        "Work involvement": ...,
+        "Desire for power": ...,
+        "Need for action": ...,
+        "Ambition": ...,
+        "Need for autonomy": ...,
+        "Altruism": ...,
+        "Novelty seeking": ...,
         }
 
         You can see that none of the scores are between 4 and 6.
@@ -111,57 +109,11 @@ export class GeminiService {
 
         Here is the job offer :`
 
-        let prompt_job_offer = `
-        Description du poste
-        QUI SOMMES-NOUS ?
-
-        Thales propose des systèmes d’information et de communication sécurisés et interopérables pour les forces armées, les forces de sécurité et les opérateurs d’importance vitale. Ces activités, qui regroupent radiocommunications, réseaux, systèmes de protection, systèmes d’information critiques et cybersécurité, répondent aux besoins de marchés où l’utilisation des nouvelles technologies numériques est déterminante. Thales intervient tout au long de la chaîne de valeur, des équipements aux systèmes en passant par le soutien logistique et les services associés.
-        Nos équipes de l’activité Systèmes d’information critiques et cybersécurité fournissent des services et des solutions globales optimisant la performance, la résilience et la sécurité des systèmes d’information afin de faire face aux ruptures technologiques et aux cybermenaces.
-        QUI ETES VOUS ?
-
-        Vous êtes diplômé d'un BAC+3 et vous visez un poste d'ingénieur(e) en développement logiciel ?
-
-        Vous vous intéressez au développement web de façon générale et connaissez une ou plusieurs technologies parmi C#, .Net, Javascript, Angular, HTML 5, CSS 3 ?
-        Vous souhaitez vous familiariser avec les processus de développement industriels (DevSecOps) ?
-        Vous êtes à l'aise en anglais ?
-        Vous avez le goût du travail en équipe ?
-        Vous vous reconnaissez ? Alors vous avez de bonnes chances de vous épanouir dans nos équipes !
-
-        CE QUE NOUS POUVONS ACCOMPLIR ENSEMBLE :
-
-        Thales propose des systèmes d’information et de communication sécurisés et interopérables pour les forces armées, les forces de sécurité et les opérateurs d’importance vitale.
-
-        Ces activités, qui regroupent radiocommunications, réseaux, systèmes de protection, systèmes d’information critiques et cybersécurité, répondent aux besoins de marchés où l’utilisation des nouvelles technologies numériques est déterminante.
-
-        Thales intervient tout au long de la chaîne de valeur, des équipements aux systèmes en passant par le soutien logistique et les services associés.
-
-        Nos équipes de l’activité Systèmes d’information critiques et cybersécurité fournissent des services et des solutions globales optimisant la performance, la résilience et la sécurité des systèmes d’information afin de faire face aux ruptures technologiques et aux cybermenaces.
-
-        En nous rejoignant, vos principales missions seront les suivantes :
-
-        Le centre de compétences de Lambersart recherche un.e alternant.e pour intervenir au sein d'une équipe de développement dynamique (équipes de 3 à 6 personnes).
-
-        Vous participerez au développement d'applications dans un environnement bienveillant avec un encadrement motivé.
-
-        En nous rejoignant, vous vous verrez confier les missions suivantes :
-
-        Sur les phases amont, spécifier et affiner le besoin avec le Product Owner via d’éventuelles interviews utilisateurs ou autres ateliers ;
-        Participer à toutes les cérémonies AGILE ;
-        Analyser, concevoir et développer l’applicatif en collaboration avec l’équipe constituée d’architectes logiciels, d’ergonome, de développeurs et de chef de projet ;
-        Mettre en place les tests unitaires et fonctionnels afin d’assurer les qualités des développements ;
-        Rédiger la documentation associée ;
-        Participer à la mise en production de l’application ;
-        Contribuer à l’amélioration de l’équipe
-        Cette alternance sera l’opportunité pour vous de travailler en équipe au sein d’une entreprise innovante, de valoriser les acquis académiques en environnement industriel et développer de nouvelles compétences.
-
-        Innovation, passion, ambition : rejoignez Thales et créez le monde de demain, dès aujourd’hui.
-        `
-
         
         let user_factors = `
             Based on the following factors scores, add a "comment" property to the json to be outputed with a little text explaining if the user profile match tje job offer factors or not based on the provided profile.
             Write it as if you were talking to them directly.
-            Also add a "note" property to the json to be outputed reflecting the accuracy of the user profile to the job offer (out of 10), also based on the provided scores. If a value isn't right (differnece equal or more than 2 points), it has to decrease significantly the note.
+            Also add a "note" property to the json to be outputed reflecting fit score of the user profile to the job offer, based on the provided scores and the score you found previously. The note is equal to the number of identical score (for example if user has Persuasiveness = 1 and you analyzed that the job also requires a 1, it is +1. Else it is +0 to the note.).
             Based on the job description, add a "company" property with the detected company name if it exists else let it empty.
             Based on the job description, add a "jobTitle" property with the detected jobTitle if you find it else empty.
             Here are the scores : ${JSON.stringify(useUserStore().scores)}
@@ -170,31 +122,29 @@ export class GeminiService {
             at the end, you should have a json this format to be outputed :
             
             {
-                "Persuasiveness": 3,
-                "Flexibility": 9,
-                "Extraversion": 3,
-                "Emotional distance": 7,
-                "Improvisation": 7,
-                "Rationalism": 9,
-                "Respect for rules": 3,
-                "Work involvement": 7,
-                "Desire for power": 1,
-                "Need for action": 3,
-                "Ambition": 7,
-                "Need for autonomy": 7,
-                "Altruism": 1,
-                "Novelty seeking": 7,
+                "Persuasiveness": ...,
+                "Flexibility": ...,
+                "Extraversion": ...,
+                "Emotional distance": ...,
+                "Improvisation": ...,
+                "Rationalism": ...,
+                "Respect for rules": ...,
+                "Work involvement": ...,
+                "Desire for power": ...,
+                "Need for action": ...,
+                "Ambition": ...,
+                "Need for autonomy": ...,
+                "Altruism": ...,
+                "Novelty seeking": ...,
                 "comment": comment ...?
                 "note" : 6,
                 "company" : ...,
                 "jobTitle" : ...
                 }
             `
-        console.log(user_factors)
-
 
         // Access your API key as an environment variable (see "Set up your API key" above)
-        const genAI = new GoogleGenerativeAI(apiKey);
+        const genAI = new GoogleGenerativeAI(import.meta.env.VITE_APP_API_KEY ?? '');
 
         // The Gemini 1.5 models are versatile and work with both text-only and multimodal prompts
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
