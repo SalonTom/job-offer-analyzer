@@ -17,9 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from jobofferanalyzer.views import FactorAPIView
+from jobofferanalyzer.views import UserAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/factors/', FactorAPIView.as_view())
+    path('api/users/', UserAPIView.as_view()),
 ]

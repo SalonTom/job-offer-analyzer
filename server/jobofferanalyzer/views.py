@@ -5,12 +5,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from jobofferanalyzer.models import Factor
+from django.contrib.auth.models import User
 from jobofferanalyzer.serializers import FactorSerializer
+from jobofferanalyzer.serializers import UserSerializer
 
 
-class FactorAPIView(APIView):
+class UserAPIView(APIView):
     def get(self, *args, **kwargs):
-        factors = Factor.objects.all()
-        factors_serialized = FactorSerializer(factors, many=True)
+        users = User.objects.all()
+        users_serialized = UserSerializer(users, many=True)
 
-        return Response(factors_serialized.data)
+        return Response(users_serialized.data)
