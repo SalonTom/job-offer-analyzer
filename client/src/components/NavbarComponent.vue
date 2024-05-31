@@ -20,12 +20,11 @@ function logout() : void {
 }
 
 watch(router.currentRoute, (new_value, old_value) => {
-    console.log(new_value.path)
     showNavbar.value = !(['/login', '/signup'].includes(new_value.path));
 }, { immediate: true });
 
 watch(userStore, (new_value, old_value) => {
-    showLoginButtons.value = !(userStore.authToken);
+    showLoginButtons.value = !(userStore.user.authToken);
 }, { immediate: true });
 
 </script>

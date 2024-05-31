@@ -14,23 +14,23 @@ const userStore = useUserStore()
                 <div class="row">
                     <div class="form-group">
                         <label for="name">Nom</label>
-                        <input id="name" :value="userStore.name" disabled>
+                        <input id="name" :value="userStore.user.last_name" disabled>
                     </div>
                     <div class="form-group">
                         <label for="firstname">Prénom</label>
-                        <input id="firstname" :value="userStore.firstname" disabled>
+                        <input id="firstname" :value="userStore.user.first_name" disabled>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="email">Prénom</label>
-                    <input id="email" :value="userStore.email" disabled>
+                    <input id="email" :value="userStore.user.email" disabled>
                 </div>
             </div>
         </div>
         <div>
             <h2>Factors</h2>
-            <div class="factors-container">
-                <div v-for="[factor, userScore] of Object.entries(userStore.scores)" class="grey-round factor">
+            <!-- <div class="factors-container">
+                <div v-for="[factor, userScore] of Object.entries(userStore.user.scores)" class="grey-round factor">
                     <div class="factor-name">
                         <div>
                             {{ factor }}
@@ -52,7 +52,7 @@ const userStore = useUserStore()
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     
     </div>

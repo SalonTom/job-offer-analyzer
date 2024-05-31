@@ -40,10 +40,9 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from) => {
-  const userStore = useUserStore();
 
-  if (to.meta['protected'] && !userStore.authToken) router.replace('/')
-  if (userStore.authToken && to.path == '/') router.replace('/home')
+  if (to.meta['protected'] && !useUserStore().user.authToken) return false
+  if (useUserStore().user.authToken && to.path == '/') router.replace('/home')
   // TODO : call to server to check if authtoken still okay
 })
 

@@ -1,16 +1,24 @@
 <script setup lang="ts">
+import router from '@/router';
 import { useUserStore } from '@/stores/user';
-import { useRouter } from 'vue-router';
+import { ref, type Ref } from 'vue';
 
 const userStore = useUserStore();
-const router = useRouter();
 
-function login() {
-    try {
-        userStore.login('test', 'test');
-        router.push('/home');
-    } catch (error) {
-        alert(error)
+let isBusy : Ref<boolean> = ref(false);
+
+async function loginAsync() {
+    if (!isBusy.value) {
+        isBusy.value = true;
+    
+        try {
+            await userStore.loginAsync('', '');
+            await router.push('/home');
+        } catch (error) {
+            alert(error)
+        } finally {
+            isBusy.value = false;
+        }
     }
 }
 
@@ -22,8 +30,9 @@ function login() {
     <router-link 
         to="/home"
     >
-        <button @click="login">
+        <button @click="loginAsync" :disabled="isBusy">
           Login
         </button>
     </router-link>
-</template>
+</template>import { type Ref, ref } from 'vue';import { type Ref, ref } from 'vue';
+

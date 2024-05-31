@@ -20,7 +20,7 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'last_name', 'first_name', 'email', 'factors']
+        fields = ['id', 'last_name', 'first_name', 'email', 'factors', 'username']
 
     def get_factors(self, obj):
         factors = obj.factors.all()

@@ -17,9 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from jobofferanalyzer.views import UserAPIView
+from jobofferanalyzer.views import UserAPIView, LoginAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/auth/login', LoginAPIView.as_view()),
     path('api/users/', UserAPIView.as_view()),
 ]
