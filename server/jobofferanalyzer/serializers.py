@@ -6,14 +6,22 @@ from jobofferanalyzer.models import Factor, Scores
 class FactorSerializer(ModelSerializer):
     score = serializers.SerializerMethodField()
 
+    def __init__(self, *args, context=None, **kwargs):
+        super().__init__(*args, context=context, **kwargs)
+
+        if context is None or 'user' not in context:
+            self.fields.pop('score', None) # Remove score field if only retrieving the list of factors.
+
     class Meta:
         model = Factor
-        fields = ('id', 'name', 'opposite_name', 'description', 'score')
+        fields = ['id', 'name', 'opposite_name', 'description', 'score']
 
     def get_score(self, obj):
-        user = self.context['user']
-        score = Scores.objects.filter(user=user, factor=obj).first()
-        return score.score if score else None
+        if 'user' in self.context: # If we retrieve user data, we include the score field.
+            user = self.context['user']
+            score = Scores.objects.filter(user=user, factor=obj).first()
+            return score.score if score else None
+        return None
 
 class UserSerializer(ModelSerializer):
     factors = serializers.SerializerMethodField()

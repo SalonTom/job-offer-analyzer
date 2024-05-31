@@ -17,6 +17,8 @@ import json
 
 from django.contrib.auth import authenticate, login
 
+# Model views
+
 class UserAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -25,7 +27,18 @@ class UserAPIView(APIView):
         users_serialized = UserSerializer(users, many=True)
 
         return Response(users_serialized.data)
+    
+class FactorAPIView(APIView):
+  # permission_classes = [IsAuthenticated]
 
+  def get(self, *args, **kwargs):
+    factors = Factor.objects.all()
+    factors_serialized = FactorSerializer(factors, many=True)
+
+    return Response(factors_serialized.data)
+
+
+# Auth views
 class LoginAPIView(APIView):
   def post(self, request):
     try:

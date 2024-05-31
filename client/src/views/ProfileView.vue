@@ -1,13 +1,40 @@
 <script setup lang="ts">
+import axiosInstance from '@/composables/axiosComposable';
+import type { Factor } from '@/models/Factor';
 import { useUserStore } from '@/stores/userStore';
+import { type Ref, ref, onMounted } from 'vue';
 
+/** Userstore */
 const userStore = useUserStore()
+
+/** Boolean to show or not the factors edition modale. */
+const showFactorsEditModale : Ref<boolean> = ref(false);
+
+/** Array containing the user factors ids */
+const userFactorsIds : Ref<number[]> = ref([]);
+
+/** Array containing the factors. */
+const factorsList : Ref<Factor[]> = ref([]);
+
+onMounted(async () => {
+  try {
+    const response = await axiosInstance.get('/api/factors/');
+    factorsList.value = response.data;
+
+    userFactorsIds.value = userStore.user.factors.map(factor => factor.id as number);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 </script>
 
 <template>
     <h1>Profile</h1>
 
     <div class="content-section">
+
+        <!-- Personal info section -->
         <div>
             <h2>Personal infos</h2>
             <div class="grey-round">
@@ -27,38 +54,92 @@ const userStore = useUserStore()
                 </div>
             </div>
         </div>
+
+        <!-- Factors section -->
         <div>
-            <h2>Factors</h2>
-            <!-- <div class="factors-container">
-                <div v-for="[factor, userScore] of Object.entries(userStore.user.scores)" class="grey-round factor">
-                    <div class="factor-name">
-                        <div>
-                            {{ factor }}
-                        </div>
-                        <div>
-                            Opposite
-                        </div>
-                    </div>
-                    <div class="score-section">
-                        <div class="score-container">
-                            <div v-for="score in 3">
-                                <input type="radio" :name="`${factor}-factor-score`" :value="10 - score" :checked="userScore == 10 - score" :style="{'height':  `${48/score}px`, 'width':  `${48/score}px`}"></input>
-                            </div>
-                        </div>
-                        <div class="score-container">
-                            <div v-for="score in 3">
-                                <input type="radio" :name="`${factor}-factor-score`" :value="4 - score" :checked="userScore == 4 - score" :style="{'height':  `${48/(4 - score)}px`, 'width':  `${48/(4 - score)}px`}"></input>
-                            </div>
-                        </div>
-                    </div>
+            <div class="factor-header">
+                <h2>Factors - {{ userStore.profileCompletionPercentage}} % completed</h2>
+                <button @click="showFactorsEditModale = true">
+                    Edit your factors
+                </button>
+            </div>
+            
+            <!-- Factors already scored by the user section -->
+            <div class="factors-container">
+                <h3>Scored factors</h3>
+
+                <div class="grey-round" style="margin-bottom: 16px;">
+                    <div v-if="userStore.user.factors?.length == 0">No factors are scored.</div>
+                    <div v-else="userStore.user.factors?.length != 100">Your factors profile is incomplete, please score the reminaing factors.</div>
                 </div>
-            </div> -->
+
+                <template v-for="factor of userStore.user.factors">
+                    <div class="grey-round factor">
+                        <div class="factor-name">
+                            <div>
+                                {{ factor.name }}
+                            </div>
+                            <div>
+                                {{ factor.opposite_name }}
+                            </div>
+                        </div>
+                        <div class="score-section">
+                            <div class="score-container">
+                                <div v-for="score in 3">
+                                    <input type="radio" :name="`${factor.name}-factor-score`" :value="10 - score" :checked="factor.score == 10 - score" :style="{'height':  `${48/score}px`, 'width':  `${48/score}px`}" disabled></input>
+                                </div>
+                            </div>
+                            <div class="score-container">
+                                <div v-for="score in 3">
+                                    <input type="radio" :name="`${factor.name}-factor-score`" :value="4 - score" :checked="factor.score == 4 - score" :style="{'height':  `${48/(4 - score)}px`, 'width':  `${48/(4 - score)}px`}" disabled></input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Factors not scored by the user section -->
+            <div class="factors-container">
+                <h3>Missing factors</h3>
+                <template v-for="factor of factorsList">
+                    <div v-if="factor.id && !(userFactorsIds.includes(factor.id))" class="grey-round factor">
+                        <div class="factor-name">
+                            <div>
+                                {{ factor.name }}
+                            </div>
+                            <div>
+                                {{ factor.opposite_name }}
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
         </div>
-    
+    </div>
+
+    <div v-if="showFactorsEditModale" class="result-modale">
+        <div class="modale-header" @click="showFactorsEditModale = false">
+            <div>
+                Factors edition modale
+            </div>
+            <div>
+                X
+            </div>
+        </div>
+        <div class="result-modale-content">
+            
+        </div>
     </div>
 </template>
 
 <style>
+
+.factor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
 .personal-infos {
     display: flex;
@@ -102,7 +183,7 @@ const userStore = useUserStore()
 
 .factors-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
 
     gap: 8px;

@@ -14,7 +14,7 @@ export default class AuthService {
      */
     public static async loginAsync(username : string, password: string) {
 
-        const response = await axiosInstance.post('/api/auth/login', {
+        const response = await axiosInstance.post('/api/auth/login/', {
             'username': username,
             'password' : password
         });
