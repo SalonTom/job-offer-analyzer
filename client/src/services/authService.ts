@@ -1,12 +1,20 @@
-import axios, { type AxiosResponse } from "axios";
+import axiosInstance from "@/composables/axiosComposable";
 
+/**
+ * Class for the authentication management.
+ */
 export default class AuthService {
-    public static async loginAsync(username : string, password: string) {
-        const instance = axios.create({
-            baseURL: 'http://127.0.0.1:8000'
-            });
 
-        const response = await instance.post('/api/auth/login', {
+
+    /**
+     * Method used to log the user in.
+     * @param username username
+     * @param password password
+     * @returns the connected user
+     */
+    public static async loginAsync(username : string, password: string) {
+
+        const response = await axiosInstance.post('/api/auth/login', {
             'username': username,
             'password' : password
         });

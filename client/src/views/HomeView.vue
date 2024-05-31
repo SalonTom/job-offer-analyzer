@@ -1,23 +1,32 @@
 <script setup lang="ts">
+import type { Factor } from '@/models/Factor';
 import { GeminiService } from '@/services/geminiService';
 import { useUserStore } from '@/stores/user';
 import { computed, reactive, ref, type Ref } from 'vue';
 
+/** Is thre a process running ? */
 const isBusy : Ref<boolean> = ref(false)
+
+/** Boolean to show the modale containing the results */
 const showResultModale:  Ref<boolean> = ref(false)
 
+/** Job Offer Object containing the job offer infomations */
 let jobOffer = reactive({
     company : '',
     title : '',
     description : ''
 })
 
+/** Result for the analysis */
 let result : Record<any, any> = reactive({comment : '', note: 0, jobTitle : '', company : ''})
 
+/**
+ * Method used to launch the job analysis.
+ */
 async function checkJobAsync() : Promise<void> {
     isBusy.value = true
 
-    if (jobOffer.description) {
+    if (!isBusy.value && jobOffer.description) {
         try {
             result = await GeminiService.callGeminiAsync(jobOffer.description)
             showResultModale.value = true
@@ -34,11 +43,13 @@ async function checkJobAsync() : Promise<void> {
     isBusy.value = false
 }
 
+/** Computed method to get the fit score between the user profile and the job offer. */
 const jobFitScore = computed(() => {
     let score = 0;
+    let userFactors : Factor[] = useUserStore().user.factors;
 
-    Object.keys(useUserStore().scores).forEach((key : string) => {
-        score += useUserStore().scores[key] == result[key] ? 1 : 0;
+    userFactors.forEach((factor : Factor) => {
+        score += factor.score == result[factor.name] ? 1 : 0;
     });
 
     return parseFloat((score*10/14).toFixed(2));

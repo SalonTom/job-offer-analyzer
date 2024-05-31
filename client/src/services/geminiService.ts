@@ -1,7 +1,16 @@
 import { useUserStore } from "@/stores/user";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+/**
+ * Service used to communicate with gemini.
+ */
 export class GeminiService {
+
+    /**
+     * Method used to call the gemini api to get the job offer analysis.
+     * @param jobOfferDescription Description of the job offer we want to analyze.
+     * @returns 
+     */
     public static async callGeminiAsync(jobOfferDescription : string) {
 
         let prompt_intro = `Voici des définitions de catégories de profil :
@@ -116,7 +125,7 @@ export class GeminiService {
             Also add a "note" property to the json to be outputed reflecting fit score of the user profile to the job offer, based on the provided scores and the score you found previously. The note is equal to the number of identical score (for example if user has Persuasiveness = 1 and you analyzed that the job also requires a 1, it is +1. Else it is +0 to the note.).
             Based on the job description, add a "company" property with the detected company name if it exists else let it empty.
             Based on the job description, add a "jobTitle" property with the detected jobTitle if you find it else empty.
-            Here are the scores : ${JSON.stringify(useUserStore().scores)}
+            Here are the scores : ${JSON.stringify(useUserStore().user.factors)}
             
             
             at the end, you should have a json this format to be outputed :

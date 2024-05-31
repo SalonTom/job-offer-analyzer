@@ -1,3 +1,5 @@
+import type { Factor } from "./Factor";
+
 export class User {
     constructor(userObject?: Partial<User>) {
       this.id = userObject?.id;
@@ -16,6 +18,6 @@ export class User {
     last_name?: string;
     email: string;
     isActive?: boolean;
-    factors?: any[];
     authToken?: string;
+    factors: Factor[];
   }
