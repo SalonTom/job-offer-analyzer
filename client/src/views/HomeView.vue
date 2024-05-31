@@ -24,9 +24,9 @@ let result : Record<any, any> = reactive({comment : '', note: 0, jobTitle : '', 
  * Method used to launch the job analysis.
  */
 async function checkJobAsync() : Promise<void> {
-    isBusy.value = true
-
+    
     if (!isBusy.value && jobOffer.description) {
+        isBusy.value = true
         try {
             result = await GeminiService.callGeminiAsync(jobOffer.description)
             showResultModale.value = true
