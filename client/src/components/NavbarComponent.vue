@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user';
+import { useUserStore } from '@/stores/userStore';
 import { ref, watch, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 

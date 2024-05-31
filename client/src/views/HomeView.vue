@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Factor } from '@/models/Factor';
 import { GeminiService } from '@/services/geminiService';
-import { useUserStore } from '@/stores/user';
+import { useUserStore } from '@/stores/userStore';
 import { computed, reactive, ref, type Ref } from 'vue';
 
 /** Is thre a process running ? */
