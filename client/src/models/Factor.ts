@@ -8,7 +8,7 @@ export class Factor {
     }
 
     id?: number;
-    name: string;
+    name?: string;
     opposite_name?: string;
     description?: string;
     score?: number;

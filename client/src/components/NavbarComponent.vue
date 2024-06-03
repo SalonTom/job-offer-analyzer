@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user';
+import { useUserStore } from '@/stores/userStore';
 import { ref, watch, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -24,7 +24,7 @@ watch(router.currentRoute, (new_value, old_value) => {
 }, { immediate: true });
 
 watch(userStore, (new_value, old_value) => {
-    showLoginButtons.value = !(userStore.user.authToken);
+    showLoginButtons.value = !(userStore.authToken);
 }, { immediate: true });
 
 </script>

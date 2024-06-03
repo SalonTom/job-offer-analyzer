@@ -1,13 +1,38 @@
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user';
+import FactorTileComponent from '@/components/FactorTileComponent.vue';
+import axiosInstance from '@/composables/axiosComposable';
+import type { Factor } from '@/models/Factor';
+import { useUserStore } from '@/stores/userStore';
+import { type Ref, ref, onMounted } from 'vue';
 
+/** Userstore */
 const userStore = useUserStore()
+
+/** Array containing the user factors ids */
+const userFactorsIds : Ref<number[]> = ref([]);
+
+/** Array containing the factors. */
+const factorsList : Ref<Factor[]> = ref([]);
+
+onMounted(async () => {
+  try {
+    const response = await axiosInstance.get('/api/factors/');
+    factorsList.value = response.data;
+
+    userFactorsIds.value = userStore.user.factors.map(factor => factor.id as number);
+  } catch (error) {
+    alert(error);
+  }
+});
+
 </script>
 
 <template>
     <h1>Profile</h1>
 
     <div class="content-section">
+
+        <!-- Personal info section -->
         <div>
             <h2>Personal infos</h2>
             <div class="grey-round">
@@ -27,38 +52,35 @@ const userStore = useUserStore()
                 </div>
             </div>
         </div>
+
+        <!-- Factors section -->
         <div>
-            <h2>Factors</h2>
-            <!-- <div class="factors-container">
-                <div v-for="[factor, userScore] of Object.entries(userStore.user.scores)" class="grey-round factor">
-                    <div class="factor-name">
-                        <div>
-                            {{ factor }}
-                        </div>
-                        <div>
-                            Opposite
-                        </div>
-                    </div>
-                    <div class="score-section">
-                        <div class="score-container">
-                            <div v-for="score in 3">
-                                <input type="radio" :name="`${factor}-factor-score`" :value="10 - score" :checked="userScore == 10 - score" :style="{'height':  `${48/score}px`, 'width':  `${48/score}px`}"></input>
-                            </div>
-                        </div>
-                        <div class="score-container">
-                            <div v-for="score in 3">
-                                <input type="radio" :name="`${factor}-factor-score`" :value="4 - score" :checked="userScore == 4 - score" :style="{'height':  `${48/(4 - score)}px`, 'width':  `${48/(4 - score)}px`}"></input>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
+            <div class="factor-header">
+                <h2>Factors - {{ userStore.profileCompletionPercentage}} % completed</h2>
+            </div>
+
+            <div v-if="userStore.profileCompletionPercentage != 100" class="grey-round" style="margin-bottom: 16px;">
+                Your factors profile is incomplete, please score the reminaing factors to access the job analyzer feature.
+            </div>
+
+            <div class="factors-container">
+                <template v-for="factor of factorsList">
+                    <FactorTileComponent 
+                        :factor="((factor.id && userFactorsIds.includes(factor.id) ? userStore.user.factors.find(f => f.id == factor.id) : factor) as Factor)">
+                    </FactorTileComponent>
+                </template>
+            </div>
         </div>
-    
     </div>
 </template>
 
 <style>
+
+.factor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
 .personal-infos {
     display: flex;
@@ -102,40 +124,7 @@ const userStore = useUserStore()
 
 .factors-container {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-
-    gap: 8px;
-}
-
-.factor-name {
-    display: flex;
-    justify-content: space-between;
-}
-
-.score-section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     gap: 16px;
+    flex-wrap: wrap;
 }
-
-.score-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-@media (max-width: 1130px) {
-    .factor {
-        max-width: 100%
-    }
-}
-
-@media (min-width: 1130px) {
-    .factor {
-        width: 340px;
-    }
-}
-
 </style>
