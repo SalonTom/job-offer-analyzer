@@ -8,9 +8,6 @@ import { type Ref, ref, onMounted } from 'vue';
 /** Userstore */
 const userStore = useUserStore()
 
-/** Boolean to show or not the factors edition modale. */
-const showFactorsEditModale : Ref<boolean> = ref(false);
-
 /** Array containing the user factors ids */
 const userFactorsIds : Ref<number[]> = ref([]);
 
@@ -24,7 +21,7 @@ onMounted(async () => {
 
     userFactorsIds.value = userStore.user.factors.map(factor => factor.id as number);
   } catch (error) {
-    console.error(error);
+    alert(error);
   }
 });
 
@@ -60,12 +57,7 @@ onMounted(async () => {
         <div>
             <div class="factor-header">
                 <h2>Factors - {{ userStore.profileCompletionPercentage}} % completed</h2>
-                <button @click="showFactorsEditModale = true">
-                    Edit your factors
-                </button>
             </div>
-            
-            <h3>Scored factors</h3>
 
             <div v-if="userStore.profileCompletionPercentage != 100" class="grey-round" style="margin-bottom: 16px;">
                 Your factors profile is incomplete, please score the reminaing factors to access the job analyzer feature.
@@ -73,23 +65,11 @@ onMounted(async () => {
 
             <div class="factors-container">
                 <template v-for="factor of factorsList">
-                    <FactorTileComponent :factor="factor.id && userFactorsIds.includes(factor.id) ? userStore.user.factors.find(f => f.id == factor.id): factor "></FactorTileComponent>
+                    <FactorTileComponent 
+                        :factor="((factor.id && userFactorsIds.includes(factor.id) ? userStore.user.factors.find(f => f.id == factor.id) : factor) as Factor)">
+                    </FactorTileComponent>
                 </template>
             </div>
-        </div>
-    </div>
-
-    <div v-if="showFactorsEditModale" class="result-modale">
-        <div class="modale-header" @click="showFactorsEditModale = false">
-            <div>
-                Factors edition modale
-            </div>
-            <div>
-                X
-            </div>
-        </div>
-        <div class="result-modale-content">
-            
         </div>
     </div>
 </template>

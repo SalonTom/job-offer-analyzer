@@ -2,7 +2,6 @@ import { ref, type Ref } from 'vue'
 import { defineStore } from 'pinia'
 import AuthService from '@/services/authService';
 import { User } from '@/models/User';
-import axiosInstance from '@/composables/axiosComposable';
 
 /**
  * Store used to store the user infos.
@@ -33,8 +32,7 @@ export const useUserStore = defineStore('user', () => {
         refreshToken.value = responseData.refresh;
 
         // Compute user profile completion percentage
-        const nbFactors : number = (await axiosInstance.get('/api/factors/')).data.length;
-        profileCompletionPercentage.value = Math.round(user.value.factors.length / nbFactors * 100);
+        profileCompletionPercentage.value = Math.round(user.value.factors.length / 14 * 100);
 
         return user.value;
     }
