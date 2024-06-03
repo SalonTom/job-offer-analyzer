@@ -18,6 +18,5 @@ export class User {
     last_name?: string;
     email: string;
     isActive?: boolean;
-    authToken?: string;
     factors: Factor[];
   }

@@ -13,7 +13,7 @@ const axiosInstance: AxiosInstance = axios.create({
  */
 axiosInstance.interceptors.request.use(
     (config) => {
-        const authToken = useUserStore().user.authToken;
+        const authToken = useUserStore().authToken;
 
         if (!!authToken) {
             config.headers["Authorization"] = `Bearer ${authToken}`;

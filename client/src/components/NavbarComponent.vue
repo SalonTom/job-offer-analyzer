@@ -24,7 +24,7 @@ watch(router.currentRoute, (new_value, old_value) => {
 }, { immediate: true });
 
 watch(userStore, (new_value, old_value) => {
-    showLoginButtons.value = !(userStore.user.authToken);
+    showLoginButtons.value = !(userStore.authToken);
 }, { immediate: true });
 
 </script>

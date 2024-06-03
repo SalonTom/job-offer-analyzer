@@ -30,9 +30,9 @@ class UserAPIView(APIView):
 
     return Response(users_serialized.data)
 
-  def update(self, request):
+  def patch(self, request):
     try:
-      user_id = request.id
+      user_id = request.data['id']
       user = User.objects.get(pk=user_id)
     except User.DoesNotExist:
       return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -41,21 +41,24 @@ class UserAPIView(APIView):
     serializer.is_valid(raise_exception=True)
     serializer.save()
 
-    factors_data = request.factors
+    factors_data = request.data['factors']
     if factors_data:
-      scores_to_update = []
-      for factor_data in factors_data:
-          factor_id = factor_data.id
-          score = factor_data.score
+        try:
+            if factors_data:
+                for factor_data in factors_data:
+                    factor_id = factor_data['id']
+                    score = factor_data['score']
 
-          scores_to_update.append(Scores(user=user, factor_id=factor_id, score=score))
+                    # Using get_or_create (recommended)
+                    defaults = {'score': score}  # Fields to update if object exists
+                    score_object, created = Scores.objects.get_or_create(user_id=user_id, factor_id=factor_id, defaults=defaults)
 
-      try:
-          Scores.objects.bulk_update(scores_to_update)
-      except (ValueError, KeyError) as e:
-          return Response({'error': f"Invalid data for factor: {e}"}, status=status.HTTP_400_BAD_REQUEST)
+                    if not created:
+                        score_object.save()
+        except (ValueError, KeyError) as e:
+            return Response({'error': f"Invalid data for factor: {e}"}, status=status.HTTP_400_BAD_REQUEST)
 
-      return Response(serializer.data)
+    return Response(serializer.data)
 
     
 class FactorAPIView(APIView):

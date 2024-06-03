@@ -41,8 +41,8 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
 
-  if (to.meta['protected'] && !useUserStore().user.authToken) router.replace('/') // If the user is not connected, it cannot access the protected routes.
-  if (useUserStore().user.authToken && to.path == '/') router.replace('/home') // If the user is connected, access directly to the home page.
+  if (to.meta['protected'] && !useUserStore().authToken) router.replace('/') // If the user is not connected, it cannot access the protected routes.
+  if (useUserStore().authToken && to.path == '/') router.replace('/home') // If the user is connected, access directly to the home page.
 
 })
 

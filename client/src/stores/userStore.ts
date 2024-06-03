@@ -12,6 +12,9 @@ export const useUserStore = defineStore('user', () => {
     /** User object containg the infos */
     let user : Ref<User> = ref(new User());
 
+    let authToken : Ref<string> = ref('')
+    let refreshToken : Ref<string> = ref('')
+
     /** Profile factors completion percentage (100% -> all factors have been scored by the user */
     let profileCompletionPercentage : Ref<number> = ref(0);
 
@@ -26,8 +29,8 @@ export const useUserStore = defineStore('user', () => {
         // Assign user data
         const responseData = await AuthService.loginAsync('tsalon', 'test');
         Object.assign(user.value, responseData.user);
-        user.value.authToken = 'TOKEN';
-
+        authToken.value = responseData.access;
+        refreshToken.value = responseData.refresh;
 
         // Compute user profile completion percentage
         const nbFactors : number = (await axiosInstance.get('/api/factors/')).data.length;
@@ -40,10 +43,12 @@ export const useUserStore = defineStore('user', () => {
      * Method to log the user out from the application.
      */
     function logout() : void {
-        user.value = new User()
+        user.value = new User();
+        authToken.value = ''
+        refreshToken.value = ''
     }
 
-  return { user, profileCompletionPercentage, loginAsync, logout }
+  return { user, profileCompletionPercentage, authToken, loginAsync, logout }
 }, {
     persist: true
 })
