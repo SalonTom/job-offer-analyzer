@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import FactorTileComponent from '@/components/FactorTileComponent.vue';
 import axiosInstance from '@/composables/axiosComposable';
 import type { Factor } from '@/models/Factor';
 import { useUserStore } from '@/stores/userStore';
@@ -64,55 +65,15 @@ onMounted(async () => {
                 </button>
             </div>
             
-            <!-- Factors already scored by the user section -->
-            <div class="factors-container">
-                <h3>Scored factors</h3>
+            <h3>Scored factors</h3>
 
-                <div class="grey-round" style="margin-bottom: 16px;">
-                    <div v-if="userStore.user.factors?.length == 0">No factors are scored.</div>
-                    <div v-else="userStore.user.factors?.length != 100">Your factors profile is incomplete, please score the reminaing factors.</div>
-                </div>
-
-                <template v-for="factor of userStore.user.factors">
-                    <div class="grey-round factor">
-                        <div class="factor-name">
-                            <div>
-                                {{ factor.name }}
-                            </div>
-                            <div>
-                                {{ factor.opposite_name }}
-                            </div>
-                        </div>
-                        <div class="score-section">
-                            <div class="score-container">
-                                <div v-for="score in 3">
-                                    <input type="radio" :name="`${factor.name}-factor-score`" :value="10 - score" :checked="factor.score == 10 - score" :style="{'height':  `${48/score}px`, 'width':  `${48/score}px`}" disabled></input>
-                                </div>
-                            </div>
-                            <div class="score-container">
-                                <div v-for="score in 3">
-                                    <input type="radio" :name="`${factor.name}-factor-score`" :value="4 - score" :checked="factor.score == 4 - score" :style="{'height':  `${48/(4 - score)}px`, 'width':  `${48/(4 - score)}px`}" disabled></input>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </template>
+            <div v-if="userStore.profileCompletionPercentage != 100" class="grey-round" style="margin-bottom: 16px;">
+                Your factors profile is incomplete, please score the reminaing factors to access the job analyzer feature.
             </div>
 
-            <!-- Factors not scored by the user section -->
             <div class="factors-container">
-                <h3>Missing factors</h3>
                 <template v-for="factor of factorsList">
-                    <div v-if="factor.id && !(userFactorsIds.includes(factor.id))" class="grey-round factor">
-                        <div class="factor-name">
-                            <div>
-                                {{ factor.name }}
-                            </div>
-                            <div>
-                                {{ factor.opposite_name }}
-                            </div>
-                        </div>
-                    </div>
+                    <FactorTileComponent :factor="factor.id && userFactorsIds.includes(factor.id) ? userStore.user.factors.find(f => f.id == factor.id): factor "></FactorTileComponent>
                 </template>
             </div>
         </div>
@@ -183,40 +144,7 @@ onMounted(async () => {
 
 .factors-container {
     display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-
-    gap: 8px;
-}
-
-.factor-name {
-    display: flex;
-    justify-content: space-between;
-}
-
-.score-section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     gap: 16px;
+    flex-wrap: wrap;
 }
-
-.score-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-@media (max-width: 1130px) {
-    .factor {
-        max-width: 100%
-    }
-}
-
-@media (min-width: 1130px) {
-    .factor {
-        width: 340px;
-    }
-}
-
 </style>
