@@ -11,7 +11,7 @@ class JobOfferAnalysis(models.Model):
     company = models.CharField(max_length=255)
     job_title = models.CharField(max_length=255)
     url = models.URLField()
-    comment = models.CharField(max_length=500)
+    comment = models.CharField(max_length=3000)
     note = models.FloatField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 

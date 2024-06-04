@@ -124,7 +124,7 @@ export class GeminiService {
             Write it as if you were talking to them directly.
             Also add a "note" property to the json to be outputed reflecting fit score of the user profile to the job offer, based on the provided scores and the score you found previously. The note is equal to the number of identical score (for example if user has Persuasiveness = 1 and you analyzed that the job also requires a 1, it is +1. Else it is +0 to the note.).
             Based on the job description, add a "company" property with the detected company name if it exists else let it empty.
-            Based on the job description, add a "jobTitle" property with the detected jobTitle if you find it else empty.
+            Based on the job description, add a "job_title" property with the detected job_title if you find it else empty.
             Here are the scores : ${JSON.stringify(useUserStore().user.factors)}
             
             
@@ -148,7 +148,7 @@ export class GeminiService {
                 "comment": comment ...?
                 "note" : 6,
                 "company" : ...,
-                "jobTitle" : ...
+                "job_title" : ...
                 }
             `
 
