@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import ModaleComponent from '@/components/core/ModaleComponent.vue';
+import axiosInstance from '@/composables/axiosComposable';
 import type { Factor } from '@/models/Factor';
 import { GeminiService } from '@/services/geminiService';
 import { useUserStore } from '@/stores/userStore';
-import { computed, reactive, ref, type Ref } from 'vue';
+import { computed, onMounted, reactive, ref, type Ref } from 'vue';
 
 /** Is thre a process running ? */
 const isBusy : Ref<boolean> = ref(false)

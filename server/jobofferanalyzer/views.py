@@ -8,11 +8,10 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
-from jobofferanalyzer.models import Factor, Scores
+from jobofferanalyzer.models import Factor, Scores, JobOfferAnalysis
 from django.contrib.auth.models import User
 from django.http import HttpRequest, JsonResponse
-from jobofferanalyzer.serializers import FactorSerializer
-from jobofferanalyzer.serializers import UserSerializer
+from jobofferanalyzer.serializers import FactorSerializer, JobOfferAnalysisSerializer, UserSerializer
 
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -69,7 +68,64 @@ class FactorAPIView(APIView):
     factors_serialized = FactorSerializer(factors, many=True)
 
     return Response(factors_serialized.data)
+  
 
+class JobOfferAnalysisAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try :
+            user_id = request.user # Get the authenticated user from the request.
+
+            if user_id is not None:
+
+                # Get the user's job offer analysis based on the foreign key.
+                job_offer_analysis = JobOfferAnalysis.objects.filter(user_id = user_id)
+                job_offer_analysis_serialized = JobOfferAnalysisSerializer(job_offer_analysis, many=True)
+
+                return Response(job_offer_analysis_serialized.data, status=status.HTTP_200_OK)
+            else:
+                return Response({'error' : 'No user found with this id.'}, status=status.HTTP_404_NOT_FOUND)
+
+        except (ValueError, KeyError) as e:
+           return Response({'error': f"Invalid data for factor: {e}"}, status=status.HTTP_400_BAD_REQUEST)
+        
+    def post(self, request):
+        try:
+            job_offer_data = request.data
+            serializer_context = {'request': request}
+            job_offer_analysis_serializer = JobOfferAnalysisSerializer(data=job_offer_data, context=serializer_context)
+            job_offer_analysis_serializer.is_valid(raise_exception=True)
+            job_offer_analysis_serializer.save()
+
+            return Response(job_offer_analysis_serializer.data)
+
+        except (ValueError, KeyError) as e:
+            return Response({'error': f"Invalid data for factor: {e}"}, status=status.HTTP_400_BAD_REQUEST)
+        
+    def patch(self, request):
+        try:
+            user = request.user # Get the authenticated user from the request.
+
+            if user is not None:
+                job_offer_id = request.data['id']  # Assuming the ID is passed in the URL (pk)
+                try:
+                    job_offer_analysis = JobOfferAnalysis.objects.get(pk=job_offer_id)
+                except JobOfferAnalysis.DoesNotExist:
+                    return Response({'error': f"Job offer analysis with ID {job_offer_id} not found"}, status=status.HTTP_404_NOT_FOUND)
+
+                job_offer_data = request.data
+                job_offer_analysis_serializer = JobOfferAnalysisSerializer(job_offer_analysis, data=job_offer_data, partial=True)
+                job_offer_analysis_serializer.is_valid(raise_exception=True)
+                job_offer_analysis_serializer.save()
+
+                return Response(job_offer_analysis_serializer.data)
+
+            return Response(job_offer_analysis_serializer.data)
+
+        except (ValueError, KeyError) as e:
+            return Response({'error': f"Invalid data for factor: {e}"}, status=status.HTTP_400_BAD_REQUEST)
+            
 
 # Auth views
 class LoginAPIView(APIView):

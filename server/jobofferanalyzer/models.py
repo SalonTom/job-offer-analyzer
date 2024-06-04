@@ -13,6 +13,7 @@ class JobOfferAnalysis(models.Model):
     url = models.URLField()
     comment = models.CharField(max_length=500)
     note = models.FloatField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Scores(models.Model):
     factor = models.ForeignKey(Factor, on_delete=models.CASCADE)

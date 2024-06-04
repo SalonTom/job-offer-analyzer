@@ -1,7 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from jobofferanalyzer.models import Factor, Scores
+from jobofferanalyzer.models import Factor, JobOfferAnalysis, Scores
 
 class FactorSerializer(ModelSerializer):
     score = serializers.SerializerMethodField()
@@ -34,3 +34,15 @@ class UserSerializer(ModelSerializer):
         factors = obj.factors.all()
         # Pass the user context to FactorSerializer
         return FactorSerializer(factors, many=True, context={'user': obj}).data
+    
+
+class JobOfferAnalysisSerializer(ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user  # Get authenticated user from context
+        return JobOfferAnalysis.objects.create(**validated_data)
+
+    class Meta:
+        model = JobOfferAnalysis
+        fields = ['id', 'company', 'job_title', 'url', 'comment', 'note', 'user']
