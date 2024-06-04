@@ -1,3 +1,4 @@
+import router from "@/router";
 import { useUserStore } from "@/stores/userStore";
 import axios, { type AxiosInstance } from "axios"
 
@@ -36,6 +37,7 @@ axiosInstance.interceptors.response.use(function (response) {
     const originalRequest = error.config.URL;
     if (error.response.status === 401) {
         useUserStore().logout();
+        router.replace('/login');
         return axios(originalRequest);
     }
 });

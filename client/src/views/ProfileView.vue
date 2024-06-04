@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import FactorTileComponent from '@/components/FactorTileComponent.vue';
+import FactorsListComponent from '@/components/FactorsListComponent.vue';
 import axiosInstance from '@/composables/axiosComposable';
 import type { Factor } from '@/models/Factor';
 import { useUserStore } from '@/stores/userStore';
@@ -7,23 +8,6 @@ import { type Ref, ref, onMounted } from 'vue';
 
 /** Userstore */
 const userStore = useUserStore()
-
-/** Array containing the user factors ids */
-const userFactorsIds : Ref<number[]> = ref([]);
-
-/** Array containing the factors. */
-const factorsList : Ref<Factor[]> = ref([]);
-
-onMounted(async () => {
-  try {
-    const response = await axiosInstance.get('/api/factors/');
-    factorsList.value = response.data;
-
-    userFactorsIds.value = userStore.user.factors.map(factor => factor.id as number);
-  } catch (error) {
-    alert(error);
-  }
-});
 
 </script>
 
@@ -56,21 +40,16 @@ onMounted(async () => {
         <!-- Factors section -->
         <div>
             <div class="factor-header">
-                <h2>Factors - {{ userStore.profileCompletionPercentage}} % completed</h2>
+                <h2>Factors</h2>
             </div>
 
             <div v-if="userStore.profileCompletionPercentage != 100" class="grey-round" style="margin-bottom: 16px;">
                 Your factors profile is incomplete, please score the reminaing factors to access the job analyzer feature.
             </div>
 
-            <div class="factors-container">
-                <template v-for="factor of factorsList">
-                    <FactorTileComponent 
-                        :factor="((factor.id && userFactorsIds.includes(factor.id) ? userStore.user.factors.find(f => f.id == factor.id) : factor) as Factor)">
-                    </FactorTileComponent>
-                </template>
-            </div>
+            <FactorsListComponent></FactorsListComponent>
         </div>
+            
     </div>
 </template>
 
@@ -120,11 +99,5 @@ onMounted(async () => {
     gap: 24px;
 
     margin-top: 12px;
-}
-
-.factors-container {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
 }
 </style>

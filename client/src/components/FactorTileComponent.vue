@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Factor } from '@/models/Factor';
-import { onMounted, ref, type Ref } from 'vue';
+import { onMounted, ref, type PropType, type Ref } from 'vue';
 
 import ModaleComponent from '@/components/core/ModaleComponent.vue';
 import { useUserStore } from '@/stores/userStore';
@@ -11,7 +11,11 @@ const isBusy : Ref<boolean> = ref(false);
 
 /** Component props. */
 const props = defineProps({
-    factor : Factor
+    factor : Factor,
+    showSkeleton : {
+        type: Boolean,
+        default: false
+    }
 });
 
 /** Component events */
@@ -26,8 +30,8 @@ const cardIsHovered : Ref<Boolean> = ref(false);
 /** User store. */
 const userStore = useUserStore();
 
-/** Boolean to show or not the factors edition modale. */
-const showFactorEditModale : Ref<boolean> = ref(false);
+/** Boolean to show or not the loading skeleton. */
+const showSkeleton : Ref<boolean> = ref(props.showSkeleton);
 
 /** Current factor */
 const factor : Ref<Factor> = ref(new Factor(props.factor));
@@ -95,37 +99,55 @@ async function updateFactorAsync() {
 </script>
 
 <template>
-    <div class="grey-round factor" @mouseenter="cardIsHovered = true" @mouseleave="cardIsHovered = false">
-        <div class="blur-bg">
+    <template v-if="showSkeleton">
+        <div class="grey-round factor">
             <div class="factor-name">
-                <div style="font-size: 16px; font-weight: 600;">
-                    {{ factor?.name }}
-                    <div style="margin-top: 4px; font-size: 14px;">
-                        <span style="font-style: italic;">Opposite factor :</span> {{ factor?.opposite_name }}
-                    </div>
+                <div class="loading" style="font-size: 16px; font-weight: 600; width: 100%;">
+                    <!-- Factor name -->
                 </div>
-                <template v-if="factor?.score">
-                    <div style="height:fit-content; width: fit-content; font-weight: bold;  font-size: 12px ; border-radius: 4px; padding: 4px 8px; background-color: #13f377e3; color: green;">
-                        {{ factor?.score }}&nbsp/&nbsp10
-                    </div>
-                </template>
-                <template v-else>
-                    <div style="font-style: italic;">
-                        Not scored yet
-                    </div>
-                </template>
+                <div class="loading" style="width: 10%;">
+                    <!-- Score -->
+                </div>
             </div>
             <div style="margin-top: 12px;">
-                {{ factor?.description }}
+                <!-- Factor description -->
+                <div v-for="i in 4" class="loading" style="margin-bottom: 8px;"></div>
             </div>
         </div>
-
-        <template v-if="cardIsHovered">
-            <div class="hover-tip" @click="editFactorModaleRef?.showModale()">
-                Tips : Click to score the factor
+    </template>
+    <template v-else>
+        <div class="grey-round factor" @mouseenter="cardIsHovered = true" @mouseleave="cardIsHovered = false">
+            <div class="blur-bg">
+                <div class="factor-name">
+                    <div style="font-size: 16px; font-weight: 600;">
+                        {{ factor?.name }}
+                        <div style="margin-top: 4px; font-size: 14px;">
+                            <span style="font-style: italic;">Opposite factor :</span> {{ factor?.opposite_name }}
+                        </div>
+                    </div>
+                    <template v-if="factor?.score">
+                        <div style="height:fit-content; width: fit-content; font-weight: bold;  font-size: 12px ; border-radius: 4px; padding: 4px 8px; background-color: #13f377e3; color: green;">
+                            {{ factor?.score }}&nbsp/&nbsp10
+                        </div>
+                    </template>
+                    <template v-else>
+                        <div style="font-style: italic;">
+                            Not scored yet
+                        </div>
+                    </template>
+                </div>
+                <div style="margin-top: 12px;">
+                    {{ factor?.description }}
+                </div>
             </div>
-        </template>
-    </div>
+    
+            <template v-if="cardIsHovered">
+                <div class="hover-tip" @click="editFactorModaleRef?.showModale()">
+                    Tips : Click to score the factor
+                </div>
+            </template>
+        </div>
+    </template>
 
     <ModaleComponent ref="editFactorModaleRef">
         <template v-slot:header>
@@ -218,9 +240,31 @@ async function updateFactorAsync() {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(209, 209, 209, 0.3);
+    background-color: rgba(209,209,209,1 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+@keyframes load {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+.loading {
+    height: 16px;
+    background: rgba(209,209,209,1);
+    border-radius: 4px;
+    background-image: linear-gradient(90deg, rgba(209,209,209,1) 0%, rgba(237,237,237,0.5) 50%, rgba(209,209,209,1) 100%);
+    background-size: 200% 100%;
+    animation: 1s load infinite ease-in-out;
+}
+
+input[type=radio]:hover {
+    cursor: pointer;
 }
 </style>
