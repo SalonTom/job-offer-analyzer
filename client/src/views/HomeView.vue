@@ -89,7 +89,7 @@ function jobFitScore() {
 </script>
 
 <template>
-    <div style="display: flex; gap: 32px; padding: 64px 0px; width: 100%; min-height: 100%; flex-grow: 1;">
+    <div class="homepage">
         <div style="display: flex; flex-direction: column; gap: 16px; padding: 0px 32px; width: 100%; justify-content: center;">
             <div class="headline">
                 Let's find out !
@@ -98,9 +98,9 @@ function jobFitScore() {
                 Copy the job offer description and hit the green button. You'll see in a few seconds if this job is a match !
             </div>
         </div>
-        <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; align-items: end;">
-            <div style="position : relative; height: 100%; width: 100%;">
-                <textarea placeholder="Job Description" v-model="jobOfferDescription" :disabled="isBusy" style="height: 100%; width: 100%; border-radius: 6px; border: none; box-shadow: inset 0px 4px 16px 4px rgba(0,0,0,0.1); padding: 32px; resize: none;"></textarea>
+        <div class="prompt-side">
+            <div style="position : relative; height: 100%; width: 100%; display: flex; flex-grow: 1;">
+                <textarea placeholder="Job Description" v-model="jobOfferDescription" :disabled="isBusy" style="flex-grow: 1; width: 100%; border-radius: 6px; border: none; box-shadow: inset 0px 4px 16px 4px rgba(0,0,0,0.1); padding: 32px; resize: none;"></textarea>
                 <div v-if="isBusy" style="position: absolute; top: 0;left: 0;right: 0;bottom: 0; background-color: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; border-radius: 6px;">
                     <LoaderComponent></LoaderComponent>
                 </div>
@@ -240,6 +240,7 @@ function jobFitScore() {
     padding: 8px 16px;
     border: none;
     cursor: pointer;
+    justify-content: center;
 
     transition: 200ms all ease-in-out;
 }
@@ -271,6 +272,27 @@ function jobFitScore() {
 
 .button.btn-disabled:hover {
     background-color: var(--grey) !important;
+}
+
+.homepage {
+    display: flex; gap: 32px; padding: 64px 0px; width: 100%; min-height: 100%; flex-grow: 1;
+}
+
+.prompt-side {
+    display: flex; flex-direction: column; gap: 12px; width: 100%; align-items: end; flex-grow: 1;
+}
+
+@media (max-width: 800px) {
+    .homepage {
+        flex-direction: column;
+        height: 100%;
+        width: auto;
+        text-align: center;
+    }
+
+    .prompt-side {
+        align-items: normal;
+    }
 }
 
 .recap {
