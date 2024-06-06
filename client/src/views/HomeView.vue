@@ -1,14 +1,15 @@
 <script setup lang="ts">
+import LoaderComponent from '@/components/core/LoaderComponent.vue';
 import ModaleComponent from '@/components/core/ModaleComponent.vue';
 import axiosInstance from '@/composables/axiosComposable';
 import type { Factor } from '@/models/Factor';
 import { JobOfferAnalysis } from '@/models/JobOfferAnalysis';
 import { GeminiService } from '@/services/geminiService';
 import { useUserStore } from '@/stores/userStore';
-import { computed, onMounted, reactive, ref, type Ref } from 'vue';
+import { reactive, ref, type Ref } from 'vue';
 
 /** Is thre a process running ? */
-const isBusy : Ref<boolean> = ref(false)
+const isBusy : Ref<boolean> = ref(false);
 
 /** Ref to the modale containing the results */
 const showResultModaleRef : Ref<typeof ModaleComponent | null> = ref(null);
@@ -85,24 +86,33 @@ function jobFitScore() {
 
     return parseFloat((score*10/14).toFixed(2));
 }
-
-
 </script>
 
 <template>
-    <h1>Home view</h1>
+    <div style="display: flex; gap: 32px; padding: 64px 0px; width: 100%; min-height: 100%; flex-grow: 1;">
+        <div style="display: flex; flex-direction: column; gap: 16px; padding: 0px 32px; width: 100%; justify-content: center;">
+            <div class="headline">
+                Let's find out !
+            </div>
+            <div class="subtitle">
+                Copy the job offer description and hit the green button. You'll see in a few seconds if this job is a match !
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; align-items: end;">
+            <div style="position : relative; height: 100%; width: 100%;">
+                <textarea placeholder="Job Description" v-model="jobOfferDescription" :disabled="isBusy" style="height: 100%; width: 100%; border-radius: 6px; border: none; box-shadow: inset 0px 4px 16px 4px rgba(0,0,0,0.1); padding: 32px; resize: none;"></textarea>
+                <div v-if="isBusy" style="position: absolute; top: 0;left: 0;right: 0;bottom: 0; background-color: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; border-radius: 6px;">
+                    <LoaderComponent></LoaderComponent>
+                </div>
+            </div>
+            <button class="button btn-primary" @click="checkJobAsync" :class="{ 'btn-disabled' : isBusy }">
+                <template v-if="!isBusy">
+                    Check if this job is made for you !
+                </template>
+            </button>
+        </div>
 
-    <template v-if="!isBusy">
-        <div class="column">
-            <textarea placeholder="Job Description" v-model="jobOfferDescription"></textarea>
-        </div>
-        <div>
-            <button @click="checkJobAsync">Check if this job is made for you !</button>
-        </div>
-    </template>
-    <template v-else>
-        Analyzing job offer ...
-    </template>
+    </div>
 
     <ModaleComponent ref="showResultModaleRef">
         <template v-slot:header>
@@ -118,6 +128,9 @@ function jobFitScore() {
                         <div>
                             {{ result["company"] }}
                         </div>
+                        <div>
+                            Url : <span style="font-style: italic;">{{ newJobOffer.url ?? 'No url defined.' }}</span>
+                        </div>
                     </div>
                     <div style="flex-grow: 2; text-align: center;">
                         {{ newJobOffer.note }} / 10
@@ -126,18 +139,17 @@ function jobFitScore() {
                 <div>
                     {{ result["comment"] }}
                 </div>
-                <div>
-                    Url : <span style="font-style: italic;">{{ newJobOffer.url ?? 'No url defined.' }}</span>
-                </div>
             </div>
         </template>
         <template v-slot:buttons>
-            <button @click="closeModale">
-                Close window
-            </button>
-            <button :disabled="isBusy" @click="saveJobOfferModaleRef?.showModale()">
-                Save for later
-            </button>
+            <div style="display: flex; gap: 4px;">
+                <button class="button btn-secondary" @click="closeModale">
+                    Close window
+                </button>
+                <button class="button btn-primary" @click="saveJobOfferModaleRef?.showModale()">
+                    Save for later
+                </button>
+            </div>
         </template>
     </ModaleComponent>
 
@@ -189,17 +201,77 @@ function jobFitScore() {
             </form>
         </template>
         <template v-slot:buttons>
-            <button @click="closeModale">
-                Cancel
-            </button>
-            <button :disabled="isBusy" @click="saveJobOfferAsync">
-                Save the job offer
-            </button>
+            <div style="display: flex; gap: 4px;">
+                <button @click="closeModale">
+                    Cancel
+                </button>
+                <button :disabled="isBusy" @click="saveJobOfferAsync">
+                    Save the job offer
+                </button>
+            </div>
         </template>
     </ModaleComponent>
 </template>
 
 <style>
+
+:root{
+    --btn-primary-color: #87C6BE;
+    --btn-primary-color-dark: #75AAA4;
+    --text-color : #15181F;
+
+    --grey: #ECECEC;
+}
+
+.headline {
+    font-size: 52px;
+    font-weight: 900;
+}
+
+.subtitle {
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.button {
+    border-radius: 6px;
+    display: flex;
+    gap: 12px;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+
+    transition: 200ms all ease-in-out;
+}
+
+.btn-primary {
+    background-color: var(--btn-primary-color);
+    color: white;
+    font-weight: bold;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    font-weight: bold;
+    border: 1px solid #D0D0D0;
+}
+
+.btn-secondary:hover {
+    border: 1px solid #B3B3B3;
+}
+
+.btn-primary:hover {
+    background-color: var(--btn-primary-color-dark);
+}
+
+.btn-disabled {
+    cursor: not-allowed;
+    background-color: var(--grey);
+}
+
+.button.btn-disabled:hover {
+    background-color: var(--grey) !important;
+}
 
 .recap {
     display: flex;

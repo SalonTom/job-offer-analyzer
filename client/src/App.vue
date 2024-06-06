@@ -7,7 +7,7 @@ import NavbarComponent from './components/NavbarComponent.vue';
   <header>
     <NavbarComponent/>
   </header>
-  <main>
+  <main style="display: flex; flex-direction: column;">
     <RouterView />
   </main>
   <footer>
