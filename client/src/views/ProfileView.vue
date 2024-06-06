@@ -12,44 +12,47 @@ const userStore = useUserStore()
 </script>
 
 <template>
-    <h1>Profile</h1>
+    <div style="padding: 0 10vw;">
 
-    <div class="content-section">
-
-        <!-- Personal info section -->
-        <div>
-            <h2>Personal infos</h2>
-            <div class="grey-round">
-                <div class="row">
-                    <div class="form-group">
-                        <label for="name">Nom</label>
-                        <input id="name" :value="userStore.user.last_name" disabled>
+        <h1>Profile</h1>
+    
+        <div class="content-section">
+    
+            <!-- Personal info section -->
+            <div>
+                <h2>Personal infos</h2>
+                <div class="grey-round">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="name">Nom</label>
+                            <input id="name" :value="userStore.user.last_name" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstname">Prénom</label>
+                            <input id="firstname" :value="userStore.user.first_name" disabled>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="firstname">Prénom</label>
-                        <input id="firstname" :value="userStore.user.first_name" disabled>
+                        <label for="email">Prénom</label>
+                        <input id="email" :value="userStore.user.email" disabled>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="email">Prénom</label>
-                    <input id="email" :value="userStore.user.email" disabled>
+            </div>
+    
+            <!-- Factors section -->
+            <div>
+                <div class="factor-header">
+                    <h2>Factors</h2>
                 </div>
+    
+                <div v-if="userStore.profileCompletionPercentage != 100" class="grey-round" style="margin-bottom: 16px;">
+                    Your factors profile is incomplete, please score the reminaing factors to access the job analyzer feature.
+                </div>
+    
+                <FactorsListComponent></FactorsListComponent>
             </div>
+                
         </div>
-
-        <!-- Factors section -->
-        <div>
-            <div class="factor-header">
-                <h2>Factors</h2>
-            </div>
-
-            <div v-if="userStore.profileCompletionPercentage != 100" class="grey-round" style="margin-bottom: 16px;">
-                Your factors profile is incomplete, please score the reminaing factors to access the job analyzer feature.
-            </div>
-
-            <FactorsListComponent></FactorsListComponent>
-        </div>
-            
     </div>
 </template>
 

@@ -2,6 +2,7 @@
 import { useUserStore } from '@/stores/userStore';
 import { ref, watch, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
+import LogoComponent from './LogoComponent.vue';
 
 const router = useRouter()
 const userStore = useUserStore();
@@ -35,37 +36,41 @@ watch(userStore, (new_value, old_value) => {
             to="/home"
             v-slot="{ navigate }"
             >
-            <div class="nav-app-title" @click="navigate">App name</div>
+            <div class="nav-app-title" @click="navigate">
+                <LogoComponent></LogoComponent>
+            </div>
         </router-link>
 
         <div class="nav-connect-section">
             <template v-if="showLoginButtons">
                 
                 <router-link
-                    to="/signup"
-                    v-slot="{ navigate }"
-                    >
-                    <div class="text-button" @click="navigate">Sign Up</div>
-                </router-link>
-
-                <router-link
                     to="/login"
                     v-slot="{ navigate }"
                     >
-                    <button class="main-button" @click="navigate">Login</button>
+                    <div class="text-button" @click="navigate">Sign In</div>
+                </router-link>
+
+                <router-link
+                    to="/signup"
+                    v-slot="{ navigate }"
+                    >
+                    <button class="button btn-primary" @click="navigate">Sign Up</button>
                 </router-link>
 
             </template>
 
             <template v-else>
-                <button class="text-button" @click="logout">Log out</button>
+                <div style="display: flex; gap: 16px; align-items: center;">
+                    <div class="text-button">Home</div>
+                    <div class="text-button">Saved analysis</div>
+                    <div style="width: 2px; height: 20px; background-color: #ECECEC;"></div>
+                </div>
                 <router-link
                     to="/profile"
                     v-slot="{ navigate }"
                     >
-                    <button class="profile" @click="navigate">
-                        <div>T</div>
-                    </button>
+                    <div class="text-button">Profile</div>
                 </router-link>
             </template>
         </div>
@@ -78,11 +83,13 @@ watch(userStore, (new_value, old_value) => {
         align-items: center;
         justify-content: space-between;
         height: 56px;
+        padding: 0 10vw;
     }
 
     .nav-connect-section {
         display: flex;
         gap: 12px;
+        align-items: center;
     }
 
     .profile {

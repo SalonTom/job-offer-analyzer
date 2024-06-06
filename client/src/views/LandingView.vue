@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <main>
+  <div>
     <h1>Hello world !</h1>
     <p>Ever wondered if a job is made for you ? </p>
     <p>This app use tests result to guide you into finding the right job for you, based on the factors that motivates you the best !</p>
@@ -25,5 +25,5 @@
       <div>Second carré avec des infos</div>
       <div>Third carré avec des infos</div>
     </div>
-  </main>
+  </div>
 </template>

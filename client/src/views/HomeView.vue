@@ -241,6 +241,11 @@ function jobFitScore() {
     border: none;
     cursor: pointer;
     justify-content: center;
+    align-items: center;
+
+    font-weight: bold;
+
+    height: 40px;
 
     transition: 200ms all ease-in-out;
 }
@@ -248,13 +253,16 @@ function jobFitScore() {
 .btn-primary {
     background-color: var(--btn-primary-color);
     color: white;
-    font-weight: bold;
 }
 
 .btn-secondary {
     background-color: transparent;
     font-weight: bold;
     border: 1px solid #D0D0D0;
+}
+
+.text-button {
+    font-weight: bold;
 }
 
 .btn-secondary:hover {
@@ -275,7 +283,7 @@ function jobFitScore() {
 }
 
 .homepage {
-    display: flex; gap: 32px; padding: 64px 0px; width: 100%; min-height: 100%; flex-grow: 1;
+    display: flex; gap: 32px; padding: 10vh 10vw; width: 100%; min-height: 100%; flex-grow: 1;
 }
 
 .prompt-side {
