@@ -25,10 +25,15 @@ class FactorSerializer(ModelSerializer):
 
 class UserSerializer(ModelSerializer):
     factors = serializers.SerializerMethodField()
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
-        fields = ['id', 'last_name', 'first_name', 'email', 'factors', 'username']
+        fields = ['id', 'last_name', 'first_name', 'email', 'factors', 'username', 'password']
+
+    def create(self, validated_data):
+        user = User.objects.create_user(**validated_data)
+        return user
 
     def get_factors(self, obj):
         factors = obj.factors.all()

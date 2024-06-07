@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.authtoken.models import Token
 
 
 from jobofferanalyzer.models import Factor, Scores, JobOfferAnalysis
@@ -156,3 +157,16 @@ class LoginAPIView(APIView):
                 return Response({'error': 'Invalid username or password'}, status=400)
         except (PermissionError) as e:
             return Response({'error': str(e)}, status=400)  # Handle authentication errors
+
+class SignUpAPIView(APIView):
+  def post(self, request):
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+      user = serializer.save()
+      login(request, user)
+      refresh = RefreshToken.for_user(user)
+      return Response({
+        'user': UserSerializer(user).data,  # Serialize and return user data
+        'access': str(refresh.access_token)
+      }, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

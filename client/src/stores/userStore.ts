@@ -38,6 +38,21 @@ export const useUserStore = defineStore('user', () => {
     }
 
     /**
+     * Method used to sign a new user up and update the store infos.
+     * @param newUser new user to sign up
+     * @returns user stored value
+     */
+    async function signUpAsync(newUser : User) {
+        // Assign user data
+        const responseData = await AuthService.signUpAsync(newUser);
+        Object.assign(user.value, responseData.user);
+        authToken.value = responseData.access;
+
+        // Compute user profile completion percentage
+        profileCompletionPercentage.value = Math.round(user.value.factors.length / 14 * 100);
+    }
+
+    /**
      * Method to log the user out from the application.
      */
     function logout() : void {
@@ -46,7 +61,7 @@ export const useUserStore = defineStore('user', () => {
         refreshToken.value = ''
     }
 
-  return { user, profileCompletionPercentage, authToken, loginAsync, logout }
+  return { user, profileCompletionPercentage, authToken, loginAsync, signUpAsync, logout }
 }, {
     persist: true
 })

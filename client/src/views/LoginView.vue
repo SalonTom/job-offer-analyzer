@@ -6,6 +6,8 @@ import router from '@/router';
 import { useUserStore } from '@/stores/userStore';
 import { onMounted, onUnmounted, ref, type Ref } from 'vue';
 
+import { ArrowLeftIcon } from '@heroicons/vue/24/solid';
+
 /** User store */
 const userStore = useUserStore();
 
@@ -22,7 +24,7 @@ const password : Ref<string> = ref('');
  * Method to log the user in after the form was filled.
  */
 async function loginAsync() {
-    if (!isBusy.value && await loginFormValidationRef?.value.validateFormAsync()) {
+    if (!isBusy.value && await loginFormValidationRef?.value?.validateFormAsync()) {
         isBusy.value = true;
     
         try {
@@ -101,10 +103,19 @@ onUnmounted(() => {
             </div>
         </div>
     </div>
+
+    <Teleport to="body">
+        <ArrowLeftIcon class="icon-24" style="position: absolute; top: 32px; left: 32px; cursor: pointer;" @click="router.go(-1)"></ArrowLeftIcon>
+    </Teleport>
 </template>
 
 
 <style>
+
+.icon-24 {
+    width: 24px;
+    height: 24px;
+}
 
 .form-group {
     display: flex;
@@ -172,7 +183,7 @@ label.error {
     border-radius: 6px;
     align-items: center;
 
-    min-width: 340px;
+    min-width: 380px;
 }
 
 .inputs {

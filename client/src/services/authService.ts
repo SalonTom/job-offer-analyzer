@@ -1,4 +1,5 @@
 import axiosInstance from "@/composables/axiosComposable";
+import type { User } from "@/models/User";
 
 /**
  * Class for the authentication management.
@@ -21,4 +22,15 @@ export default class AuthService {
 
         return response.data
     }
+
+    /**
+     * Method used to sign a new user up.
+     * @param newUser new user to create.
+     * @returns the connected user
+     */
+        public static async signUpAsync(newUser : User) {
+
+            const response = await axiosInstance.post('/api/auth/signup/', newUser);
+            return response.data
+        }
 }
