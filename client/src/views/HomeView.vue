@@ -216,11 +216,14 @@ function jobFitScore() {
 <style>
 
 :root{
-    --btn-primary-color: #87C6BE;
-    --btn-primary-color-dark: #75AAA4;
+    --primary-color: #87C6BE;
+    --primary-color-dark: #75AAA4;
+    --primary-color-light: #ECFAF4;
+
     --text-color : #15181F;
 
     --grey: #ECECEC;
+    --grey-dark: #D0D0D0;
 }
 
 .headline {
@@ -251,26 +254,28 @@ function jobFitScore() {
 }
 
 .btn-primary {
-    background-color: var(--btn-primary-color);
+    background-color: var(--primary-color);
     color: white;
+    font-size: 16px;
 }
 
 .btn-secondary {
     background-color: transparent;
     font-weight: bold;
-    border: 1px solid #D0D0D0;
+    border: 1px solid var(--grey);
+}
+
+.btn-secondary:hover {
+    border: 1px solid var(--grey-dark);
 }
 
 .text-button {
     font-weight: bold;
 }
 
-.btn-secondary:hover {
-    border: 1px solid #B3B3B3;
-}
 
 .btn-primary:hover {
-    background-color: var(--btn-primary-color-dark);
+    background-color: var(--primary-color-dark);
 }
 
 .btn-disabled {
@@ -284,6 +289,10 @@ function jobFitScore() {
 
 .homepage {
     display: flex; gap: 32px; padding: 10vh 10vw; width: 100%; min-height: 100%; flex-grow: 1;
+}
+
+.text-small {
+    font-size: 14px;
 }
 
 .prompt-side {

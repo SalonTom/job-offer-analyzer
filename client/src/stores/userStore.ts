@@ -26,7 +26,7 @@ export const useUserStore = defineStore('user', () => {
     async function loginAsync(username : string, password : string) : Promise<User> {
 
         // Assign user data
-        const responseData = await AuthService.loginAsync('tsalon', 'test');
+        const responseData = await AuthService.loginAsync(username, password);
         Object.assign(user.value, responseData.user);
         authToken.value = responseData.access;
         refreshToken.value = responseData.refresh;

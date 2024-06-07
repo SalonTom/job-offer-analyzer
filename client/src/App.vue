@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView, useRouter } from 'vue-router'
 import NavbarComponent from './components/NavbarComponent.vue';
+
+const router = useRouter();
 </script>
 
 <template>
@@ -10,7 +12,7 @@ import NavbarComponent from './components/NavbarComponent.vue';
   <main style="display: flex; flex-direction: column;">
     <RouterView />
   </main>
-  <footer>
+  <footer v-if="!(['/login', '/signup'].includes(router.currentRoute.value.path))">
     App created by me !
   </footer>
 </template>

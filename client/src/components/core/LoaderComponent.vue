@@ -15,7 +15,7 @@
 
     30% {
         transform: scale(1.5);
-        background-color: var(--btn-primary-color);
+        background-color: var(--primary-color);
     }
 
     100% {
@@ -30,7 +30,7 @@
 
     40% {
         transform: scale(1.5);
-        background-color: var(--btn-primary-color);
+        background-color: var(--primary-color);
     }
 
     100% {
@@ -46,7 +46,7 @@
 
     50% {
         transform: scale(1.5);
-        background-color: var(--btn-primary-color);
+        background-color: var(--primary-color);
     }
 
     100% {
@@ -57,7 +57,7 @@
 div[class^='loading-bar-'] {
     height: 32px;
     width: 8px;
-    background-color: var(--btn-primary-color-dark);
+    background-color: var(--primary-color-dark);
 }
 
 .loading-bar-1 {
@@ -70,20 +70,5 @@ div[class^='loading-bar-'] {
 
 .loading-bar-3 {
     animation: 1.5s loading-3 infinite ease-in-out;
-}
-
-.small {
-    height: 16px;
-    width: 4px;
-}
-
-.medium {
-    height: 20px;
-    width: 6px;
-}
-
-.large {
-    height: 32px;
-    width: 8px;
 }
 </style>
