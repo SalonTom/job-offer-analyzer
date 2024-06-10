@@ -345,6 +345,17 @@ function jobFitScore() {
     .button {
         height: fit-content;
     }
+
+    .router-active-link {
+        background-color: var(--primary-color-light);
+        padding: 4px 8px;
+        border-radius: 6px;
+        
+    }
+
+    .router-active-link > * {
+        font-weight: bold;
+    }
 }
 
 .recap {

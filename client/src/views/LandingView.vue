@@ -102,7 +102,8 @@ const aboutSectionsTexts : { title : string, desc : string, src : URL }[] = [
   flex-direction: column;
   align-items: center;
   gap: 64px;
-  padding: 80px 0px;
+  padding: 80px 10vw;
+  text-align: center;
 
   background-color: var(--primary-color-light);
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/userStore';
-import { ref, watch, type Ref } from 'vue';
+import { onMounted, onUnmounted, ref, watch, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import LogoComponent from './LogoComponent.vue';
 
@@ -10,6 +10,7 @@ const userStore = useUserStore();
 const showNavbar : Ref<boolean> = ref(true);
 const showLoginButtons : Ref<boolean> = ref(false);
 
+const mobileMode : Ref<Boolean> = ref(false);
 
 function logout() : void {
     try {
@@ -28,6 +29,22 @@ watch(userStore, (new_value, old_value) => {
     showLoginButtons.value = !(userStore.authToken);
 }, { immediate: true });
 
+function checkMobileOnResize() {
+    mobileMode.value = window.innerWidth <= 800;
+}
+
+onMounted(() => {
+    if (window.innerWidth <= 800) {
+        mobileMode.value = true;
+    }
+
+    window.addEventListener('resize', checkMobileOnResize);
+})
+
+onUnmounted(() => {
+    window.removeEventListener('resize', checkMobileOnResize);
+})
+
 </script>
 
 <template>
@@ -35,8 +52,9 @@ watch(userStore, (new_value, old_value) => {
         <router-link
             to="/home"
             v-slot="{ navigate }"
+            class="nav-app-title"
             >
-            <div class="nav-app-title" @click="navigate">
+            <div @click="navigate">
                 <LogoComponent></LogoComponent>
             </div>
         </router-link>
@@ -60,12 +78,12 @@ watch(userStore, (new_value, old_value) => {
 
             </template>
 
-            <template v-else>
+            <template v-else-if="!mobileMode">
                 <div style="display: flex; gap: 16px; align-items: center;">
                     <router-link to="/home" class="text-button">
                         Home
                     </router-link>
-                    <router-link to="/analysis" class="text-button">
+                    <router-link to="/saved-analysis" class="text-button">
                         Saved analysis
                     </router-link>
                     <div style="width: 2px; height: 20px; background-color: #ECECEC;"></div>
@@ -75,6 +93,27 @@ watch(userStore, (new_value, old_value) => {
                 </router-link>
             </template>
         </div>
+
+        <template v-if="mobileMode && showNavbar && !showLoginButtons">
+            <Teleport to="body">
+                <div class="shadow" style="position: sticky; background-color: white; bottom: 0px; padding-bottom: 32px; display: flex; justify-content: center; width: 100%;">
+                    <div style=" width:100%; border-radius: 6px; padding: 8px 24px; display: flex; justify-content: center; align-items: center; gap: 32px;">
+                        <router-link to="/home" style="display: flex; align-items: center; gap: 4px;">
+                            <img src="../assets/icons/home.svg">
+                            <div v-if="router.currentRoute.value.path == '/home'" class="text-small" style="color: var(--primary-color-dark)">Home</div>
+                        </router-link>
+                        <router-link to="/saved-analysis" style="display: flex; align-items: center; gap: 4px;">
+                            <img src="../assets/icons/bookmark.svg">
+                            <div v-if="router.currentRoute.value.path == '/saved_analysis'" class="text-small" style="color: var(--primary-color-dark)">Saved</div>
+                        </router-link>
+                        <router-link to="/profile" style="display: flex; align-items: center; gap: 4px;">
+                            <img src="../assets/icons/account.svg">
+                            <div v-if="router.currentRoute.value.path == '/profile'" class="text-small" style="color: var(--primary-color-dark)">Profile</div>
+                        </router-link>
+                    </div>
+                </div>
+            </Teleport>
+        </template>
     </div>
 </template>
 
@@ -100,4 +139,16 @@ watch(userStore, (new_value, old_value) => {
 
         border : 1px solid;
     }
+
+    .nav-app-title {
+        background-color: transparent !important;
+    }
+
+    /* @media (max-width : 800px) {
+        .nav-container {
+            position: absolute;
+            top: initial;
+            box-shadow: 0px 4px 24px 16px rgba(0, 0, 0, 0.1);
+        }
+    } */
 </style>
