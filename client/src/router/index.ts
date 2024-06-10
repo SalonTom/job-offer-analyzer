@@ -44,7 +44,8 @@ const router = createRouter({
         behavior: 'smooth'
       }
     }
-  }
+  },
+  linkActiveClass: 'router-active-link',
 })
 
 router.beforeEach((to, from) => {

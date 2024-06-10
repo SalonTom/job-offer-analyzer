@@ -48,8 +48,8 @@ watch(userStore, (new_value, old_value) => {
                     to="/login"
                     v-slot="{ navigate }"
                     >
-                    <div class="text-button" @click="navigate">Sign In</div>
-                </router-link>
+                        <div class="text-button" @click="navigate">Sign In</div>
+                    </router-link>
 
                 <router-link
                     to="/signup"
@@ -62,15 +62,16 @@ watch(userStore, (new_value, old_value) => {
 
             <template v-else>
                 <div style="display: flex; gap: 16px; align-items: center;">
-                    <div class="text-button">Home</div>
-                    <div class="text-button">Saved analysis</div>
+                    <router-link to="/home" class="text-button">
+                        Home
+                    </router-link>
+                    <router-link to="/analysis" class="text-button">
+                        Saved analysis
+                    </router-link>
                     <div style="width: 2px; height: 20px; background-color: #ECECEC;"></div>
                 </div>
-                <router-link
-                    to="/profile"
-                    v-slot="{ navigate }"
-                    >
-                    <div class="text-button">Profile</div>
+                <router-link to="/profile" class="text-button">
+                    Profile
                 </router-link>
             </template>
         </div>

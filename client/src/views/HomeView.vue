@@ -276,7 +276,28 @@ function jobFitScore() {
 }
 
 .text-button {
-    font-weight: bold;
+    position: relative;
+    cursor: pointer;
+}
+
+.text-button:hover {
+    text-shadow: 1px 0px 0px var(--text-color);
+}
+
+.text-button::before {
+    content: '';
+    position: absolute;
+    bottom: 0px;
+    transform: translateY(200%);
+    height: 1px;
+    background-color: var(--text-color);
+    width: 0%;
+
+    transition: all 150ms ease-in;
+}
+
+.text-button:hover::before {
+    width: 100%;
 }
 
 
@@ -299,6 +320,10 @@ function jobFitScore() {
 
 .text-small {
     font-size: 14px;
+}
+
+.router-active-link {
+    font-weight: bold !important;
 }
 
 .prompt-side {
