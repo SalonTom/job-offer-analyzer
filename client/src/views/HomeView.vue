@@ -231,6 +231,12 @@ function jobFitScore() {
     font-weight: 900;
 }
 
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 32px;
+}
+
 .subtitle {
     font-size: 18px;
     line-height: 24px;
@@ -309,6 +315,10 @@ function jobFitScore() {
 
     .prompt-side {
         align-items: normal;
+    }
+
+    .button {
+        height: fit-content;
     }
 }
 
