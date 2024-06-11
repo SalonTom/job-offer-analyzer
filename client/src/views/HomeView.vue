@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import FormValidation from '@/components/core/FormValidationComponent.vue';
 import LoaderComponent from '@/components/core/LoaderComponent.vue';
 import ModaleComponent from '@/components/core/ModaleComponent.vue';
 import axiosInstance from '@/composables/axiosComposable';
@@ -11,11 +12,17 @@ import { reactive, ref, type Ref } from 'vue';
 /** Is thre a process running ? */
 const isBusy : Ref<boolean> = ref(false);
 
+/** Are we saving an offer ? */
+const isSavingOffer : Ref<boolean> = ref(false);
+
 /** Ref to the modale containing the results */
 const showResultModaleRef : Ref<typeof ModaleComponent | null> = ref(null);
 
 /** Ref to the modale containing the svae form */
 const saveJobOfferModaleRef : Ref<typeof ModaleComponent | null> = ref(null);
+
+/** Ref to the form validation for savin ghte job offer */
+const saveJobOfferFromValidationRef : Ref<typeof FormValidation | null> = ref(null);
 
 /** Job offer description to analyze */
 const jobOfferDescription : Ref<string> = ref('');
@@ -55,16 +62,21 @@ async function checkJobAsync() : Promise<void> {
  * Method to save the job offer analysis.
  */
 async function saveJobOfferAsync() {
-    if (!isBusy.value) {
-        isBusy.value = true;
+    if (!isBusy.value && !isSavingOffer.value && await saveJobOfferFromValidationRef?.value?.validateFormAsync()) {
+        isSavingOffer.value = true;
         
         try {
             await axiosInstance.post('/api/jobofferanalysis/', newJobOffer);
+
+            saveJobOfferModaleRef.value?.closeModale();
+            showResultModaleRef.value?.closeModale();
 
             alert('Your offer was registered !')
             
         } catch (error) {
             alert(error)
+        } finally {
+            isSavingOffer.value = false;
         }
     } 
 }
@@ -158,21 +170,22 @@ function jobFitScore() {
             Save the job offer analysis
         </template>
         <template v-slot:content>
-            <form
-                @submit="saveJobOfferAsync"
-                method="post"
-            >
-                <div> 
-                    <label for="company">Company name</label>
+            <FormValidation 
+                ref="saveJobOfferFromValidationRef"
+                :item="newJobOffer"
+                :required-fields="['company', 'job_title', 'comment', 'url']">
+
+                <div class="form-group"> 
+                    <label for="company" class="required">Company name</label>
                     <input
-                    id="company"
-                    v-model="newJobOffer.company"
-                    type="text"
-                    name="company"
+                        id="company"
+                        v-model="newJobOffer.company"
+                        type="text"
+                        name="company"
                     >
                 </div>
-                <div>
-                    <label for="job_title">Job title</label>
+                <div class="form-group">
+                    <label for="job_title" class="required">Job title</label>
                     <input
                     id="job_title"
                     v-model="newJobOffer.job_title"
@@ -180,8 +193,8 @@ function jobFitScore() {
                     name="job_title"
                     >
                 </div>
-                <div>
-                    <label for="comment">Analysis</label>
+                <div class="form-group">
+                    <label for="comment" class="required">Analysis</label>
                     <input
                     id="comment"
                     v-model="newJobOffer.comment"
@@ -189,8 +202,8 @@ function jobFitScore() {
                     name="comment"
                     >
                 </div>
-                <div>
-                    <label for="url">Job offer link</label>
+                <div class="form-group">
+                    <label for="url" class="required">Job offer link</label>
                     <input
                     id="url"
                     v-model="newJobOffer.url"
@@ -198,16 +211,21 @@ function jobFitScore() {
                     name="url"
                     >
                 </div>
-            </form>
+            </FormValidation>
         </template>
         <template v-slot:buttons>
             <div style="display: flex; gap: 4px;">
-                <button @click="closeModale">
-                    Cancel
-                </button>
-                <button :disabled="isBusy" @click="saveJobOfferAsync">
-                    Save the job offer
-                </button>
+                <template v-if="!isSavingOffer">
+                    <button class="button btn-secondary" @click="saveJobOfferModaleRef?.closeModale()">
+                        Cancel
+                    </button>
+                    <button class="button btn-primary" :disabled="isBusy" @click="saveJobOfferAsync">
+                        Save the job offer
+                    </button>
+                </template>
+                <template v-else>
+                    <LoaderComponent style="transform: scale(0.8)"></LoaderComponent>
+                </template>
             </div>
         </template>
     </ModaleComponent>

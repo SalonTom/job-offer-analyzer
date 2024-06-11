@@ -92,6 +92,7 @@ defineExpose({
 
 .modale-header {
     display: flex;
+    gap: 32px;
     justify-content: space-between;
 }
 

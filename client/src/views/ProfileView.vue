@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import FactorTileComponent from '@/components/FactorTileComponent.vue';
 import FactorsListComponent from '@/components/FactorsListComponent.vue';
-import axiosInstance from '@/composables/axiosComposable';
-import type { Factor } from '@/models/Factor';
 import { useUserStore } from '@/stores/userStore';
-import { type Ref, ref, onMounted } from 'vue';
 
 /** Userstore */
 const userStore = useUserStore()
@@ -13,14 +9,11 @@ const userStore = useUserStore()
 
 <template>
     <div style="padding: 0 10vw;">
-
-        <h1>Profile</h1>
     
         <div class="content-section">
     
             <!-- Personal info section -->
             <div>
-                <h2>Personal infos</h2>
                 <div class="grey-round">
                     <div class="row">
                         <div class="form-group">
