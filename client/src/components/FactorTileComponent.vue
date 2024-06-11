@@ -3,8 +3,10 @@ import { Factor } from '@/models/Factor';
 import { onMounted, ref, type PropType, type Ref } from 'vue';
 
 import ModaleComponent from '@/components/core/ModaleComponent.vue';
+import LoaderComponent from '@/components/core/LoaderComponent.vue';
 import { useUserStore } from '@/stores/userStore';
 import axiosInstance from '@/composables/axiosComposable';
+import { useToastStore } from '@/stores/toastStore';
 
 /** Is thre a process running ? */
 const isBusy : Ref<boolean> = ref(false);
@@ -88,8 +90,12 @@ async function updateFactorAsync() {
 
             userStore.profileCompletionPercentage = Math.round(userStore.user.factors.length / 14 * 100);
 
+            useToastStore().addToast(`Factor ${factor.value.name?.toLocaleLowerCase()} score set to ${newScore.value}`, 'positive');
+
+            editFactorModaleRef.value?.closeModale();
+
         } catch (error) {
-            alert(error);
+            useToastStore().addToast('Something went wrong updating the score ...', 'negative');
         } finally {
             isBusy.value = false;
         }
@@ -175,12 +181,19 @@ async function updateFactorAsync() {
         </template>
 
         <template v-slot:buttons>
-            <button @click="closeModale">
-                Cancel
-            </button>
-            <button :disabled="newScore == 0 || newScore == factor?.score || isBusy" @click="updateFactorAsync">
-                Update score
-            </button>
+            <template v-if="!isBusy">
+                <div style="display: flex; gap: 4px;">
+                    <button class="button btn-secondary" @click="closeModale">
+                        Cancel
+                    </button>
+                    <button class="button btn-primary" :disabled="isBusy" @click="updateFactorAsync">
+                        Update score
+                    </button>
+                </div>
+            </template>
+            <template v-else>
+                <LoaderComponent style="transform: scale(0.8)"></LoaderComponent>
+            </template>
         </template>
     </ModaleComponent>
 </template>

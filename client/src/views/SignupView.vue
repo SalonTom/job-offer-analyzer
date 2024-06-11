@@ -9,6 +9,7 @@ import { onMounted, onUnmounted, ref, type Ref } from 'vue';
 import { ArrowLeftIcon } from '@heroicons/vue/24/solid';
 import { User } from '@/models/User';
 import axiosInstance from '@/composables/axiosComposable';
+import { useToastStore } from '@/stores/toastStore';
 
 /** User store */
 const userStore = useUserStore();
@@ -29,8 +30,9 @@ async function singUpAsync() {
         try {
             await userStore.signUpAsync(newUser.value);
             await router.push('/home');
+            useToastStore().addToast(`Welcome to Sparky, ${newUser.value.username} :)`, 'positive');
         } catch (error : any) {
-            alert('Error trying to sign up.')
+            useToastStore().addToast('Something went wrong signing up ...', 'negative');
         } finally {
             isBusy.value = false;
         }

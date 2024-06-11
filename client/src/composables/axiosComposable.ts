@@ -1,4 +1,5 @@
 import router from "@/router";
+import { useToastStore } from "@/stores/toastStore";
 import { useUserStore } from "@/stores/userStore";
 import axios, { type AxiosInstance } from "axios"
 
@@ -37,7 +38,9 @@ axiosInstance.interceptors.response.use(function (response) {
     const originalRequest = error.config.URL;
     if (error.response.status === 401) {
         useUserStore().logout();
-        router.replace('/login');
+        router.push('/login');
+
+        useToastStore().addToast('You have been disconnected. Please log in again.', 'neutral');
         return axios(originalRequest);
     }
 });

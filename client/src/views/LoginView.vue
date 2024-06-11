@@ -7,6 +7,7 @@ import { useUserStore } from '@/stores/userStore';
 import { onMounted, onUnmounted, ref, type Ref } from 'vue';
 
 import { ArrowLeftIcon } from '@heroicons/vue/24/solid';
+import { useToastStore } from '@/stores/toastStore';
 
 /** User store */
 const userStore = useUserStore();
@@ -30,8 +31,9 @@ async function loginAsync() {
         try {
             await userStore.loginAsync(username.value, password.value);
             await router.push('/home');
+            useToastStore().addToast(`Welcome back to Sparky, ${username.value} :)`, 'positive');
         } catch (error : any) {
-            alert('Error trying to sign in.')
+            useToastStore().addToast('Something went wrong signing in ...', 'negative');
         } finally {
             isBusy.value = false;
         }

@@ -34,9 +34,7 @@ const userStore = useUserStore()
     
             <!-- Factors section -->
             <div>
-                <div class="factor-header">
-                    <h2>Factors</h2>
-                </div>
+                <h2 style="margin-bottom: 16px; margin-top: 16px;">Factors</h2>
     
                 <div v-if="userStore.profileCompletionPercentage != 100" class="grey-round" style="margin-bottom: 16px;">
                     Your factors profile is incomplete, please score the reminaing factors to access the job analyzer feature.

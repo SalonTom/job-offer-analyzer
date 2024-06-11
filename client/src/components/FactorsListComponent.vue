@@ -2,6 +2,7 @@
 import FactorTileComponent from '@/components/FactorTileComponent.vue';
 import axiosInstance from '@/composables/axiosComposable';
 import type { Factor } from '@/models/Factor';
+import { useToastStore } from '@/stores/toastStore';
 import { useUserStore } from '@/stores/userStore';
 import { type Ref, ref, onMounted } from 'vue';
 
@@ -23,7 +24,7 @@ onMounted(async () => {
         factorsList.value = factorsResponse.data;
         userFactorsIds.value = userStore.user.factors.map(factor => factor.id as number);
     } catch (error) {
-        alert(error);
+        useToastStore().addToast('Something went wrong fetching the factors ...', 'negative');
     } finally {
         showSkeletonLoaders.value = false;
     }

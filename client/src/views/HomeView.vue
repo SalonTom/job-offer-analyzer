@@ -6,8 +6,9 @@ import axiosInstance from '@/composables/axiosComposable';
 import type { Factor } from '@/models/Factor';
 import { JobOfferAnalysis } from '@/models/JobOfferAnalysis';
 import { GeminiService } from '@/services/geminiService';
+import { useToastStore } from '@/stores/toastStore';
 import { useUserStore } from '@/stores/userStore';
-import { reactive, ref, type Ref } from 'vue';
+import { onMounted, reactive, ref, type Ref } from 'vue';
 
 /** Is thre a process running ? */
 const isBusy : Ref<boolean> = ref(false);
@@ -49,7 +50,7 @@ async function checkJobAsync() : Promise<void> {
 
             showResultModaleRef.value?.showModale();
         } catch (error) {
-            alert(error)
+            useToastStore().addToast('Something went wrong analyzing the job offer ...', 'negative');
         } finally {
             isBusy.value = false;
         }
@@ -71,10 +72,10 @@ async function saveJobOfferAsync() {
             saveJobOfferModaleRef.value?.closeModale();
             showResultModaleRef.value?.closeModale();
 
-            alert('Your offer was registered !')
+            useToastStore().addToast('Your offer was registered !', 'positive');
             
         } catch (error) {
-            alert(error)
+            useToastStore().addToast('Something went wrong saving the job offer ...', 'negative');
         } finally {
             isSavingOffer.value = false;
         }
@@ -116,6 +117,12 @@ function jobFitScore() {
                 <div v-if="isBusy" style="position: absolute; top: 0;left: 0;right: 0;bottom: 0; background-color: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; border-radius: 6px;">
                     <LoaderComponent></LoaderComponent>
                 </div>
+
+                <template v-if="useUserStore().user.factors.length != 14">
+                    <div class="grey-round" style="position: absolute; bottom: 0; left: 0; right: 0;">
+                        Your factor profile being incomplete, the score displayed in the analysis won't be accurate...
+                    </div>
+                </template>
             </div>
             <button class="button btn-primary" @click="checkJobAsync" :class="{ 'btn-disabled' : isBusy }">
                 <template v-if="!isBusy">
