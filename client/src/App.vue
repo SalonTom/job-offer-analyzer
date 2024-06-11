@@ -17,8 +17,7 @@ const toasts = ref(useToastStore().toasts)
   <main style="display: flex; flex-direction: column;">
     <RouterView />
   </main>
-  <footer v-if="!(['/login', '/signup'].includes(router.currentRoute.value.path))">
-    App created by me !
+  <footer v-if="!(['/login', '/signup'].includes(router.currentRoute.value.path))" style="height: 48px;">
   </footer>
   <Teleport to="body">
     <div style="position: fixed; right: 0px; top: 0px; display: flex; flex-direction: column; overflow: hidden; gap: 8px; padding: 48px 10vw; pointer-events: none;">
