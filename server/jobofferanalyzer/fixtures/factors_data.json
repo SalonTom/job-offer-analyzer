@@ -1,0 +1,128 @@
+[
+  {
+    "model": "jobofferanalyzer.factor",
+    "pk": 1,
+    "fields": {
+      "name": "Persuasiveness",
+      "opposite_name": "Need for objectivity",
+      "description": "“Will to persuade” is defined as the ease with which an individual manages to\nconvince and influence others by using tact and adapting your speech to your audience.\nThe “need for objectivity” refers to the tendency to demonstrate authenticity and transparency in\nhis way of communicating."
+    }
+  },
+  {
+    "model": "jobofferanalyzer.factor",
+    "pk": 2,
+    "fields": {
+      "name": "Flexibility",
+      "opposite_name": "Firmness",
+      "description": "Flexibility\" is defined as an individual's willingness to consider the perspectives of others and seek consensus to avoid conflict. \"Firmness\" refers to the tendency to assert one's point of view with determination and to rigorously maintain one's positions in interactions with others."
+    }
+  },
+  {
+    "model": "jobofferanalyzer.factor",
+    "pk": 3,
+    "fields": {
+      "name": "Extraversion",
+      "opposite_name": "Introversion",
+      "description": "Extraversion\" is defined as the tendency to be outgoing, enthusiastic, and sociable, with a desire to form many friendships. \"Introversion\" refers to the tendency to be reserved and formal, preferring to invest in fewer but closer relationships."
+    }
+  },
+  {
+    "model": "jobofferanalyzer.factor",
+    "pk": 4,
+    "fields": {
+      "name": "Emotional distance",
+      "opposite_name": "Emotional sensitivity",
+      "description": "Emotional distance is defined as the tendency to remain calm, detached, and composed, even in stressful or upsetting situations. Emotional sensitivity is the inclination to take things personally, express feelings readily, and be reactive to pressure and stress."
+    }
+  },
+  {
+    "model": "jobofferanalyzer.factor",
+    "pk": 5,
+    "fields": {
+      "name": "Improvisation",
+      "opposite_name": "Organization",
+      "description": "Improvisation is defined as the ability to be spontaneous, to act without a predetermined plan, and to be comfortable adapting to unexpected situations. Organization refers to the preference for structuring one's activities in a methodical manner and employing clear procedures to carry out tasks."
+    }
+  },
+  {
+    "model": "jobofferanalyzer.factor",
+    "pk": 6,
+    "fields": {
+      "name": "Rationalism",
+      "opposite_name": "Intuition",
+      "description": "Rationalism is defined as the tendency to be objective, logical, analytical, and fact-based in evaluating information and making decisions. Intuition refers to the inclination to grasp situations holistically and make choices based on gut feelings, instincts, impressions, and experiences."
+    }
+  },
+  {
+    "model": "jobofferanalyzer.factor",
+    "pk": 7,
+    "fields": {
+      "name": "Adherence to rules",
+      "opposite_name": "Freethinking",
+      "description": "Adherence to rules is defined as the tendency to conform to and uphold the established guidelines and standards set by society. Freethinking refers to the inclination to critically examine existing rules, potentially modifying or creating new ones if they are perceived as outdated or ineffective."
+    }
+  },
+  {
+    "model": "jobofferanalyzer.factor",
+    "pk": 8,
+    "fields": {
+      "name": "Work involvement",
+      "opposite_name": "Work-life balance",
+      "description": "Work involvement refers to the high level of importance placed on work and the emotional connection one feels with their company. Work-life balance refers to the desire to separate personal and professional life, achieving a harmonious equilibrium between the two."
+    }
+  },
+  {
+    "model": "jobofferanalyzer.factor",
+    "pk": 9,
+    "fields": {
+      "name": "Power motivation",
+      "opposite_name": "Need for guidance",
+      "description": "Power motivation is defined as the tendency to take charge of situations and seek out roles that require making decisions and leading others. Need for guidance refers to the preference for being supervised and guided, receiving clear instructions, and seeking feedback on one's work."
+    }
+  },
+  {
+    "model": "jobofferanalyzer.factor",
+    "pk": 10,
+    "fields": {
+      "name": "Need for action",
+      "opposite_name": "Need for reflection",
+      "description": "Need for action refers to the inclination to be energetic and to prefer short-term projects that yield tangible and immediate results. Need for reflection refers to the preference to engage in long-term projects that demand strategy, patience, and contemplation."
+    }
+  },
+  {
+    "model": "jobofferanalyzer.factor",
+    "pk": 11,
+    "fields": {
+      "name": "Ambition",
+      "opposite_name": "Modesty",
+      "description": "Ambition is defined as the pursuit of success by setting challenging and audacious goals. Modesty refers to the inclination to be content with one's current situation and to value professional stability."
+    }
+  },
+  {
+    "model": "jobofferanalyzer.factor",
+    "pk": 12,
+    "fields": {
+      "name": "Need for autonomy",
+      "opposite_name": "Sense of group",
+      "description": "Need for autonomy is defined as the preference for freedom and independence in carrying out one's work. Sense of group refers to an inclination towards cooperation and solidarity, and a preference for completing tasks as part of a team."
+    }
+  },
+  {
+    "model": "jobofferanalyzer.factor",
+    "pk": 13,
+    "fields": {
+      "name": "Altruism",
+      "opposite_name": "Individualism",
+      "description": "Altruism is defined as the tendency to be concerned about others, to give one's time and energy to contribute to the general good. Individualism refers to being pragmatic and focused on one's own goals."
+    }
+  },
+  {
+    "model": "jobofferanalyzer.factor",
+    "pk": 14,
+    "fields": {
+      "name": "Novelty seeking",
+      "opposite_name": "Familiarity seeking",
+      "description": "Novelty seeking is defined as the tendency to be curious and inclined to explore, test, or implement new ways of doing things. Familiarity seeking refers to the preference for sticking to established habits, relying on familiar routines, and following proven methods."
+    }
+  }
+]

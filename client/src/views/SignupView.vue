@@ -8,7 +8,6 @@ import { onMounted, onUnmounted, ref, type Ref } from 'vue';
 
 import { ArrowLeftIcon } from '@heroicons/vue/24/solid';
 import { User } from '@/models/User';
-import axiosInstance from '@/composables/axiosComposable';
 import { useToastStore } from '@/stores/toastStore';
 
 /** User store */
@@ -86,13 +85,13 @@ onUnmounted(() => {
                     </div>
 
                     <div class="form-group">
-                        <label class="required" for="username">Email</label>
-                        <input type="text" placeholder="Username" name="username" v-model="newUser.email">
+                        <label class="required" for="email">Email</label>
+                        <input type="text" placeholder="Username" name="email" v-model="newUser.email">
                     </div>
 
                     <div class="form-group">
-                        <label class="required" for="email">Username</label>
-                        <input type="email" placeholder="Email address" name="email" v-model="newUser.username">
+                        <label class="required" for="username">Username</label>
+                        <input type="email" placeholder="Email address" name="username" v-model="newUser.username">
                     </div>
         
                     <div class="form-group">
