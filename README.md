@@ -15,6 +15,22 @@ No need to worry about listing your skills upfront!  This project focuses on per
 
 So ditch the confusion and give this project a whirl!  It might just be the secret weapon you need to find a job you love.
 
+<style>
+  .side-by-side {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .side-by-side img {
+    width: 50%;
+  }
+</style>
+
+<div class="side-by-side">
+  <img src="image-1.png" alt="App desktop images">
+  <img src="image.png" alt="App mobile images">
+</div>
+
 ## Installation and configuration
 
 ### Cloning the repository
