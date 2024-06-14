@@ -78,6 +78,7 @@ defineExpose({
     display: flex;
     flex-direction: column;
     gap: 24px;
+    overflow-y: auto;
 }
 
 @media (min-width : 800px) {
